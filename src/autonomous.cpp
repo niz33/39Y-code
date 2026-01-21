@@ -44,8 +44,9 @@ void Autonomous::test(){
     leftWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
 	rightWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
     chassis.setPose(0,0,0);
-    chassis.moveToPose(0,48,0,5000,{},false);
-    chassis.moveToPose(0,0,0,5000,{.forwards=false},false);
+    chassis.turnToHeading(90,5000,{},false);
+    // chassis.moveToPose(0,48,0,5000,{},false);
+    // chassis.moveToPose(0,0,0,5000,{.forwards=false},false);
 }
 
 double originalTime;
@@ -99,44 +100,64 @@ void Autonomous::RightMidLong(){
 
 }
 
-void Autonomous::matchLeftAuton1(){
+void Autonomous::matchLeftAutonBlue(){
     currentAngle=0;
-    chassis.setPose(0,0,90);
+    chassis.setPose(0,0,180);
     originalTime = pros::millis();
     matchLoad.set_value(false);
-    leftWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
-	rightWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
     intakeMotor.move_voltage(12000);
-    outtakeMotor.move_voltage(0);
-    chassis.moveToPoint(-33,0,1200,{.forwards=false},false);
-    chassis.turnToHeading(0,1200,{},false);
+    outtakeMotor.move_velocity(-50);
+
+    //turn and move to high goal
+    chassis.turnToPoint(-11,22,1200,{.forwards=false},false);
+    chassis.moveToPoint(-11,22,1200,{.forwards=false},false);
+    chassis.turnToPoint(2,35,1200,{.forwards=true},false);
+    chassis.moveToPoint(2,35,1200,{.forwards=true},false);
+
+    //score high goal
+    intakeMotor.move_velocity(400);
+    outtakeMotor.move_velocity(100);
+    pros::delay(500);
+
+    //go to matchload
+    outtakeMotor.move_velocity(0);
+    chassis.moveToPoint(-33,0,1600,{.forwards=false},false);
     matchLoad.set_value(true);
-    chassis.moveToPoint(-33,-15,1200,{.forwards=false},false);
-    pros::delay(5000);
-    chassis.moveToPoint(-33,30,2000,{.forwards=true},false);
-    intakeMotor.move_voltage(12000);
+    chassis.turnToPoint(-33,-11,1200,{.forwards=false},false);
+    chassis.moveToPoint(-33,-11,1200,{.forwards=false},false);
+
+    //matchloading
+    pros::delay(200);
+    chassis.moveToPoint(-33,-10000,200,{.forwards=false},false);
+    pros::delay(500);
+    chassis.moveToPoint(-33,25,200,{.forwards=true},false);
+    chassis.turnToPoint(-33,25,1300,{.forwards=true},false);
+    chassis.moveToPoint(-33,25,1300,{.forwards=true},false);
+
+    //scoring long goal
     outtakeMotor.move_voltage(12000);
+    chassis.moveToPoint(-33,28,500,{.forwards=true},false);
+
+    //color sorting
+    int cDelay=10;
+    std::queue<int> cRight;
+    int flag=0;
     while(true){
-        // int temp=1;
-        // if (cSensor.get_hue()>115) temp=0;
-        // cRight.push(temp);
-        // if(cRight.size()>=cDelay&&cRight.front()==0){
-        //     countdown=13;
-        // }
-        // if(countdown>0) countdown--;
-        // if(countdown>0){
-        //     midMotor.move_voltage(10000);
-        //     intakeMotor.move_voltage(2000);
-        //     // midMotor.move_voltage(-10000);
-        //     // intakeMotor.move_voltage(10000);
-        // }
-        // else{
-        //     midMotor.move_voltage(-10000);
-        //     intakeMotor.move_voltage(10000);
-        // }
-        // if(cRight.size()>=cDelay){
-        //     cRight.pop();
-        // }
+        int temp=1;
+        if (cSensor.get_hue()<45) temp=0;
+        cRight.push(temp);
+        if(cRight.size()>=cDelay&&cRight.front()==0){
+            flag=1;
+        }
+        if(flag==1){
+            intakeMotor.move_voltage(12000);
+            outtakeMotor.move_velocity(-50);
+        }
+        if(flag==0){
+            intakeMotor.move_voltage(12000);
+            outtakeMotor.move_voltage(12000);
+        }
+        //back out at the end
         if (pros::millis() >= 14800 + originalTime){
             drivetrain.leftMotors->move_voltage(-12000);
             drivetrain.rightMotors->move_voltage(-12000);
@@ -508,46 +529,64 @@ void Autonomous::skillsAuton2(){
 
 
 void Autonomous::matchSolo(){
-    // leftWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
-	// rightWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
-    // chassis.setPose(0,0,90);
-    // intakeMotor.move_voltage(-3000);
-    // rampMotor.move_voltage(12000);
-    // midMotor.move_voltage(-3000);
-    // chassis.moveToPoint(-32,0,1200,{.forwards=false},false);
-    // pneumatic.set_value(true);
-    // chassis.turnToHeading(0,1000,{},false);
-    // chassis.moveToPoint(-32,-10,750,{.forwards=false},false);
-    // pros::delay(500);
-    // chassis.moveToPoint(-35,22,1200,{.forwards=true},false);
-    // midMotor.move_voltage(-10000);
-    // intakeMotor.move_voltage(10000);
-    // rampMotor.move_voltage(12000);
-    // pros::delay(1000);
-    // chassis.setPose(-35 ,20,0);
-    // pneumatic.set_value(false);
-    // intakeMotor.move_voltage(-3000);
-    // rampMotor.move_voltage(12000);
-    // midMotor.move_voltage(-3000);
+    currentAngle=0;
+    chassis.setPose(0,0,90);
+    originalTime = pros::millis();
+    matchLoad.set_value(false);
+    intakeMotor.move_voltage(12000);
+    outtakeMotor.move_velocity(-50);
 
-    // chassis.moveToPoint(-30,10,500,{.forwards=false},false);
-    // chassis.moveToPoint(-5,25,1200,{.forwards=false},true);
-    // chassis.moveToPose(10,40,45,1200,{.forwards=true},false);
-    // midMotor.move_voltage(10000);
-    // intakeMotor.move_voltage(10000);
-    // rampMotor.move_voltage(12000);
-    // pros::delay(1000);
-    // intakeMotor.move_voltage(-3000);
-    // rampMotor.move_voltage(12000);
-    // midMotor.move_voltage(-3000);
-    // chassis.moveToPoint(5,30,400,{.forwards=false},false);
-    // chassis.moveToPoint(45,25,1200,{.forwards=false},false);
-    // chassis.moveToPoint(67,10,1200,{.forwards=false},false);
-    // chassis.turnToHeading(0,1000,{},false);
-    // chassis.moveToPoint(67,20,750,{.forwards=false},false);
-    //  midMotor.move_voltage(-10000);
-    // intakeMotor.move_voltage(10000);
-    // rampMotor.move_voltage(12000);
-    // pros::delay(1000);
+    chassis.moveToPoint(25,0,1200,{.forwards=true},false);
+    chassis.turnToPoint(25,-13,1000,{.forwards=false},false);
+    chassis.moveToPoint(25,-13,1200,{.forwards=false},false);
+
+    //matchloading
+    pros::delay(200);
+    chassis.moveToPoint(25,-10000,200,{.forwards=false},false);
+    pros::delay(500);
+    chassis.moveToPoint(25,13,200,{.forwards=true},false);
+
+    //scoring high goal
+    outtakeMotor.move_voltage(12000);
+    chassis.moveToPoint(25,18,500,{.forwards=true},true);
+    pros::delay(1500);
+    chassis.setPose(0,0,0);
+
+    //middle
+    chassis.moveToPoint(0,-11,1200,{.forwards=false},false);
+    chassis.turnToPoint(-20,7,1000,{.forwards=false},false);
+    chassis.moveToPoint(-20,7,1000,{.forwards=false},false);
+
+    chassis.turnToPoint(-65,7,1000,{.forwards=false},false);
+    chassis.moveToPoint(-65,7,1500,{.forwards=false},false);
+    chassis.turnToPoint(-65,7,1000,{.forwards=false},false);
+    chassis.moveToPoint(-65,7,1200,{.forwards=false},false);
+    
+    //color sorting
+    int cDelay=10;
+    std::queue<int> cRight;
+    int flag=0;
+    while(true){
+        int temp=1;
+        if (cSensor.get_hue()<45) temp=0;
+        cRight.push(temp);
+        if(cRight.size()>=cDelay&&cRight.front()==0){
+            flag=1;
+        }
+        if(flag==1){
+            intakeMotor.move_voltage(12000);
+            outtakeMotor.move_velocity(-50);
+        }
+        if(flag==0){
+            intakeMotor.move_voltage(12000);
+            outtakeMotor.move_voltage(12000);
+        }
+        //back out at the end
+        if (pros::millis() >= 14800 + originalTime){
+            drivetrain.leftMotors->move_voltage(-12000);
+            drivetrain.rightMotors->move_voltage(-12000);
+        }
+        pros::delay(10);
+    }
 }
 

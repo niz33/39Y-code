@@ -79,7 +79,7 @@ void Control::intake(){
         outtakeMotor.move_voltage(12000);
         Control::cooldown=0;
 
-    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
         // if(cRight.size()>=cDelay&&cRight.front()==0){
         // //if (cSensor.get_hue()<35){
         //     countdown=10;
@@ -92,9 +92,9 @@ void Control::intake(){
         // else{
         
         Control::cooldown++;
-        if(cooldown>12){
-            intakeMotor.move_voltage(12000);
-            outtakeMotor.move_velocity(-100);
+        if(cooldown>20){
+            intakeMotor.move_velocity(400);
+            outtakeMotor.move_velocity(100);
         }
         else{
             intakeMotor.move_voltage(-12000);
@@ -110,8 +110,8 @@ void Control::intake(){
         outtakeMotor.move_voltage(-12000);
         Control::cooldown=0;
     } else {
-        intakeMotor.move_voltage(0);
-        outtakeMotor.move_voltage(0);
+        intakeMotor.move_velocity(0);
+        outtakeMotor.move_velocity(0);
         Control::cooldown=0;
     }
 
@@ -122,7 +122,7 @@ void Control::intake(){
 
 
 void Control::initialize(){
-    intakeMotor.set_brake_mode(MOTOR_BRAKE_COAST);
+    intakeMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
     outtakeMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
     leftWheels.set_brake_mode_all(MOTOR_BRAKE_COAST);
     rightWheels.set_brake_mode_all(MOTOR_BRAKE_COAST);
@@ -137,7 +137,7 @@ void Control::park(){
             Control::descoring=1-Control::descoring;
 			wing.set_value(descoring);
 	}
-    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)){
             Control::descoring=1-Control::descoring;
 			wing.set_value(descoring);
             

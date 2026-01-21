@@ -11,7 +11,7 @@ class Autonomous{
     static void lateralPIDtune();
     static void correctHeading();
     static void matchForward();
-    static void matchLeftAuton1();
+    static void matchLeftAutonBlue();
     static void matchLeftAuton2();
     static void matchLeftAuton3();
     static void matchRightAuton2();
