@@ -445,7 +445,7 @@ void Autonomous::skillsAuton(){
     //scoring long goal
     outtakeMotor.move_voltage(12000);
     chassis.moveToPoint(30,25,500,{.forwards=false},true);
-    pros::delay(2500);
+    pros::delay(3000);
     chassis.setPose(0,0,chassis.getPose().theta);
     matchLoad.set_value(false);
 
@@ -456,8 +456,8 @@ void Autonomous::skillsAuton(){
     chassis.turnToPoint(-18,2,800,{.forwards=true},false);
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
-    chassis.moveToPoint(-18,2,1000,{.forwards=true},false);
-    matchLoad.set_value(true);
+    chassis.moveToPoint(-18,2,1000,{.forwards=true,.maxSpeed=60},false);
+    //matchLoad.set_value(true);
 
     chassis.turnToPoint(-68,2,800,{.forwards=true},false);
     matchLoad.set_value(false);
@@ -466,6 +466,7 @@ void Autonomous::skillsAuton(){
 
     
     chassis.turnToPoint(-92,-15,1200,{.forwards=true},false);
+    intakeMotor.move_voltage(0);
     chassis.moveToPoint(-92,-15,1200,{.forwards=true},false);
 
     chassis.turnToPoint(-92,5,800,{.forwards=false},false);
@@ -475,9 +476,10 @@ void Autonomous::skillsAuton(){
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_voltage(12000);
     chassis.moveToPoint(-92,10,500,{.forwards=false},true);
-    pros::delay(2000);
+    pros::delay(3000);
 
     chassis.setPose(0,0,chassis.getPose().theta);
+    outtakeMotor.move_velocity(0);
 
     //matchload
 
@@ -489,18 +491,21 @@ void Autonomous::skillsAuton(){
 
     //score long
 
-    chassis.moveToPoint(0,10,1500,{.forwards=false},false);
+    chassis.moveToPoint(0,10,1500,{.forwards=false,.maxSpeed=70},false);
     outtakeMotor.move_voltage(12000);
     chassis.moveToPoint(0,20,1000,{.forwards=false},true);
     
-    pros::delay(2000);
+    pros::delay(3000);
     chassis.setPose(0,0,chassis.getPose().theta);
     //park
     matchLoad.set_value(false);
     outtakeMotor.move_velocity(0);
-    chassis.moveToPose(26,-30,90,3000,{.forwards=true},false);
+    chassis.moveToPose(18,-20,90,1200,{.forwards=true},false);
+    chassis.moveToPose(25,-32,90,3000,{.forwards=true},false);
     matchLoad.set_value(true);
-    chassis.moveToPoint(40,-30,3000,{.forwards=true},false);
+    chassis.moveToPoint(400,-32,500,{.forwards=true},false);
+    chassis.moveToPoint(40,-32,3000,{.forwards=true},false);
+    matchLoad.set_value(false);
 
 }
 void Autonomous::skillsAuton2(){
