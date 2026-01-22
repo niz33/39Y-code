@@ -83,10 +83,10 @@ void autonomous() {
     //         pros::delay(10);
     //     }
 	//Autonomous::skillsMove();
-	//Autonomous::RightMidLong();
+	Autonomous::RightMidLong();
 	//Autonomous::matchSolo();
 	//Autonomous::test();
-	Autonomous::skillsAuton();
+	//Autonomous::skillsAuton();
 	//Autonomous::matchLeftAutonBlue();
 }
 
