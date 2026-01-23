@@ -1,13 +1,17 @@
 #include "main.h"
 
-bool Control::grabberState = false;
-double Control::hang_speed = 0;
+
 bool Control::descoring = false;
-bool Control::parking = false;
 bool Control::load = false;
+bool Control::middleDescoring = false;
+bool Control::lastR2 = false;
+bool Control::lastA = false;
+bool Control::lastB = false;
 int Control::cDelay = 3;
 int Control::countdown = 0;
 int Control::cooldown = 0;
+int Control::middleDescoreDuration = 0;
+
 std::queue<int> Control::cRight;
 void Control::driveCodeArcade(){
 
@@ -104,16 +108,21 @@ void Control::intake(){
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
         intakeMotor.move_voltage(12000);
         outtakeMotor.move_velocity(-50);
+       
         Control::cooldown=0;
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
         intakeMotor.move_voltage(-12000);
         outtakeMotor.move_voltage(-12000);
+        Control::middleDescoreDuration++;
         Control::cooldown=0;
     } else {
         intakeMotor.move_velocity(0);
         outtakeMotor.move_velocity(0);
         Control::cooldown=0;
     }
+
+    
+
 
     if(cRight.size()>=cDelay){
         cRight.pop();
@@ -129,19 +138,42 @@ void Control::initialize(){
 }
 
 void Control::park(){
+    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
+        // if(Control::middleDescoreDuration>0&&Control::middleDescoreDuration<15){
+        //     Control::middleDescoring=!Control::middleDescoring;
+        //     middleDescore.set_value(Control::middleDescoring);
+        // }
+        // Control::middleDescoreDuration=0;
+        if(Control::lastA==false){
+            Control::middleDescoring=!Control::middleDescoring;
+            middleDescore.set_value(Control::middleDescoring);
+        }
+        Control::lastA=true;
+    }
+    else{
+        Control::lastA=false;
+    }
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
+        if(Control::lastB==false){
             Control::load=1-Control::load;
-			matchLoad.set_value(load);
+            matchLoad.set_value(load);
+        }
+        Control::lastB=true;
+			
 	}
-    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
-            Control::descoring=1-Control::descoring;
-			wing.set_value(descoring);
-	}
+    else{
+        Control::lastB=false;
+    }
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)){
+        if(Control::lastR2==false){
             Control::descoring=1-Control::descoring;
-			wing.set_value(descoring);
-            
+            wing.set_value(Control::descoring);
+        }
+        Control::lastR2=true;
 	}
+    else{
+        Control::lastR2=false;
+    }
 }
 
 

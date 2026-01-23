@@ -25,6 +25,7 @@ pros::Optical cSensor(9);
 
 pros::ADIDigitalOut matchLoad('A', false);
 pros::ADIDigitalOut wing('C', false);
+pros::ADIDigitalOut middleDescore('D', false);
 
  
 //inertial Sensor

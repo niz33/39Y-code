@@ -37,6 +37,7 @@ extern pros::Motor wallStakeMotor;
 
 extern pros::ADIDigitalOut matchLoad;
 extern pros::ADIDigitalOut wing;
+extern pros::ADIDigitalOut middleDescore;
 
 //Inertia Sensor
 extern pros::Imu inertial;

@@ -17,15 +17,18 @@ class Control{
         static std::queue<int> cRight;
         static int countdown;
         static int cooldown;
+        static int middleDescoreDuration;
 
     public:
-        static double hang_speed;
-        static bool parking;
         static bool load;
         static bool descoring;
+        static bool middleDescoring;
+
+        static bool lastR2;
+        static bool lastA;
+        static bool lastB;
 
         
-        static bool grabberState;
         static void update();
         static void initialize();
         static void intakeVelocity(int v);
