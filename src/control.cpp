@@ -97,11 +97,12 @@ void Control::intake(){
         
         Control::cooldown++;
         if(cooldown>20){
-            intakeMotor.move_velocity(400);
-            outtakeMotor.move_velocity(100);
+            intakeMotor.move_velocity(600);
+            outtakeMotor.move_velocity(-100);
         }
         else{
-            intakeMotor.move_voltage(-12000);
+            //intakeMotor.move_voltage(-12000);
+            intakeMotor.move_velocity(-100);
             outtakeMotor.move_voltage(-12000);
         }
         //}

@@ -80,15 +80,16 @@ void Autonomous::RightMidLong(){
     
     matchLoad.set_value(true);
     chassis.turnToHeading(270, 2400, {}, false);
-    chassis.moveToPoint(-65, -45, 500, {.forwards = true, .maxSpeed = 60},false);
-    chassis.moveToPoint(-70, -45, 500, {.forwards = true},true);
+    chassis.moveToPoint(-65, -45, 500, {.forwards = true, .maxSpeed = 50},false);
+    chassis.moveToPoint(-70, -45, 500, {.forwards = true, .maxSpeed = 50},true);
 
-    pros::delay(1000);
+    pros::delay(980);
     //head to long goal
     //matchLoad.set_value(false);
     chassis.moveToPoint(-25, -45, 1200, {.forwards = false, .maxSpeed = 60},false);
     outtakeMotor.move_voltage(12000);
     pros::delay(2200);
+    
     chassis.setPose(0,0,chassis.getPose().theta);
     chassis.moveToPoint(-15, 0, 1200, {.forwards = true},false);
     //pros::delay(200);
@@ -98,7 +99,7 @@ void Autonomous::RightMidLong(){
     // chassis.turnToHeading(270, 800, {}, false);
 
     // chassis.moveToPoint(-14, -54, 2000, {.forwards = false, .maxSpeed = 55},false);
-    chassis.moveToPose(19, -8, 270, 10000, {.forwards = false},false);
+    chassis.moveToPose(19, -8.75, 270, 10000, {.forwards = false},false);
 
 }
 
@@ -110,19 +111,19 @@ void Autonomous::matchLeftAutonBlue(){
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
 
-    //turn and move to high goal
+    //turn and move to mid goal
     chassis.turnToPoint(-11,22,1200,{.forwards=true},false);
-    chassis.moveToPoint(-11,22,1400,{.forwards=true,.maxSpeed=75},false);
+    chassis.moveToPoint(-11,22,1400,{.forwards=true,.maxSpeed=60},false);
     matchLoad.set_value(true);
     chassis.turnToPoint(3,34,1200,{.forwards=false},false);
     chassis.moveToPoint(3,34,1200,{.forwards=false},false);
 
-    //score high goal
+    //score mid goal
     intakeMotor.move_velocity(-600);
     outtakeMotor.move_velocity(-600);
     pros::delay(200);
     intakeMotor.move_velocity(600);
-    outtakeMotor.move_velocity(100);
+    outtakeMotor.move_velocity(300);
     pros::delay(600);
 
     //go to matchload
@@ -130,26 +131,26 @@ void Autonomous::matchLeftAutonBlue(){
     outtakeMotor.move_velocity(0);
     pros::delay(100);
     
-    chassis.moveToPoint(-33.5,0,1500,{.forwards=true,.maxSpeed=60},false);
-    chassis.turnToPoint(-33.5,-19,800,{.forwards=true},false);
+    chassis.moveToPoint(-36,0,1500,{.forwards=true,.maxSpeed=80},false);
+    chassis.turnToPoint(-36,-19,800,{.forwards=true},false);
     
     
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
-    chassis.moveToPoint(-33.5,-19,900,{.forwards=true,.maxSpeed=45},false);
+    chassis.moveToPoint(-36,-19,900,{.forwards=true,.maxSpeed=60},false);
 
     //matchloading
     pros::delay(200);
-    chassis.moveToPoint(-33.5,-100,100,{.forwards=true},true);
-    pros::delay(100);
+    chassis.moveToPoint(-36,-100,100,{.forwards=true},true);
+    pros::delay(90);
     
     //leaving match load
-    chassis.turnToPoint(-33.5,25,1300,{.forwards=false},false);
-    chassis.moveToPoint(-33.5,27,1500,{.forwards=false},false);
+    chassis.turnToPoint(-36,25,1300,{.forwards=false},false);
+    chassis.moveToPoint(-36,27,1500,{.forwards=false},false);
 
     //scoring long goal
     outtakeMotor.move_voltage(12000);
-    chassis.moveToPoint(-33.5,30,500,{.forwards=false},false);
+    chassis.moveToPoint(-36,30,700,{.forwards=false},false);
 
     //color sorting
     int cDelay=10;
@@ -173,7 +174,7 @@ void Autonomous::matchLeftAutonBlue(){
             outtakeMotor.move_voltage(12000);
         }
         //back out at the end
-        if (pros::millis() >= 11800 + originalTime){
+        if (pros::millis() >= 11800 + originalTime){//11800
             // drivetrain.leftMotors->move_voltage(-12000);
             // drivetrain.rightMotors->move_voltage(-12000);
             break;
@@ -185,7 +186,7 @@ void Autonomous::matchLeftAutonBlue(){
 
 
     chassis.moveToPoint(0,-15,1200,{.forwards=true},false);
-    chassis.moveToPose(9,18,180,12000,{.forwards=false},false);
+    chassis.moveToPose(8.75,17,180,12000,{.forwards=false, .minSpeed=50},false);
 }
 
 
