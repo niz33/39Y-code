@@ -95,9 +95,9 @@ void Autonomous::RightMidLong(){
     while(true){
         int temp=1;
         //score red
-        //if (cSensor.get_hue()>80) temp=0;
+        if (cSensor.get_hue()>60) temp=0;
         //score blue
-        if (cSensor.get_hue()<20) temp=0;
+        //if (cSensor.get_hue()<20) temp=0;
         cRight.push(temp);
         if(cRight.front()==0){
             flag=1;
