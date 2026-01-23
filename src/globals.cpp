@@ -21,7 +21,7 @@ pros::MotorGroup rightWheels({18,17,-20},pros::v5::MotorGears::blue);
 pros::Motor intakeMotor(-14, pros::v5::MotorGears::blue);
 pros::Motor outtakeMotor(-15, pros::v5::MotorGears::blue);
 
-pros::Optical cSensor(9);
+pros::Optical cSensor(1);
 
 pros::ADIDigitalOut matchLoad('A', false);
 pros::ADIDigitalOut wing('C', false);
