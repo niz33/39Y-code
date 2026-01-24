@@ -86,8 +86,8 @@ void autonomous() {
 	//Autonomous::skillsAuton();
 	//Autonomous::matchSolo();
 	//Autonomous::test();
-	Autonomous::skillsAuton();
-	//Autonomous::matchLeftAutonBlue();
+	//Autonomous::skillsAuton();
+	Autonomous::matchLeftAutonBlue();
 	//Autonomous::RightMidLong();
 }
 

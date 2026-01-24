@@ -123,11 +123,20 @@ void Autonomous::RightMidLong(){
         }
         pros::delay(5);
     }
+    intakeMotor.move_voltage(12000);
+    outtakeMotor.move_velocity(-50);
     
     chassis.setPose(0,0,chassis.getPose().theta);
     chassis.moveToPoint(-15, 0, 1200, {.forwards = true},false);
     chassis.moveToPose(19, -8.75, 270, 10000, {.forwards = false},false);
 
+    while(true){
+        if (pros::millis() >= 14800 + originalTime){//11800
+            chassis.turnToHeading(240, 1000, {}, false);
+            //chassis.moveToPoint(10, -8.75, 1200, {.forwards = true},false);
+        }
+        pros::delay(5);
+    }
 }
 
 void Autonomous::matchLeftAutonBlue(){
@@ -185,9 +194,9 @@ void Autonomous::matchLeftAutonBlue(){
     while(true){
         int temp=1;
         //score red
-        //if (cSensor.get_hue()>80) temp=0;
+        if (cSensor.get_hue()>80) temp=0;
         //score blue
-        if (cSensor.get_hue()<20) temp=0;
+        //if (cSensor.get_hue()<20) temp=0;
         cRight.push(temp);
         if(cRight.front()==0){
             flag=1;
@@ -206,7 +215,7 @@ void Autonomous::matchLeftAutonBlue(){
             outtakeMotor.move_voltage(12000);
         }
         //back out at the end
-        if (pros::millis() >= 118000 + originalTime){//11800
+        if (pros::millis() >= 11800 + originalTime){//11800
             // drivetrain.leftMotors->move_voltage(-12000);
             // drivetrain.rightMotors->move_voltage(-12000);
             break;
@@ -216,9 +225,16 @@ void Autonomous::matchLeftAutonBlue(){
     chassis.setPose(0,0,180);
 
 
-
     chassis.moveToPoint(0,-15,1200,{.forwards=true},false);
     chassis.moveToPose(8.75,17,180,12000,{.forwards=false, .minSpeed=50},false);
+
+    while(true){
+        if (pros::millis() >= 14800 + originalTime){//11800
+            chassis.turnToHeading(150, 1000, {}, false);
+            //chassis.moveToPoint(8.75, 15, 1200, {.forwards = true},false);
+        }
+        pros::delay(5);
+    }
 }
 
 
