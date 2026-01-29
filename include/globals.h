@@ -42,6 +42,8 @@ extern pros::ADIDigitalOut middleDescore;
 //Inertia Sensor
 extern pros::Imu inertial;
 
+extern pros::Distance distLeft;
+
 // //lemlib
 extern lemlib::Drivetrain drivetrain;
 extern lemlib::OdomSensors sensors;

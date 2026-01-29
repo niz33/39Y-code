@@ -30,14 +30,15 @@ pros::ADIDigitalOut middleDescore('D', false);
  
 //inertial Sensor
 pros::Imu inertial(16);
+pros::Distance distLeft(9);
 
 //odometry
 pros::Rotation horizontalRotation(15);
 pros::Rotation verticalRotation(-14);
 
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalRotation, lemlib::Omniwheel::NEW_275, 2.65);
+//lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalRotation, lemlib::Omniwheel::NEW_275, 2.65);
 
-lemlib::TrackingWheel vertical_tracking_wheel(&verticalRotation, lemlib::Omniwheel::NEW_275, 0.625);
+//lemlib::TrackingWheel vertical_tracking_wheel(&verticalRotation, lemlib::Omniwheel::NEW_275, 0.625);
 
 
 // lemlib::TrackingWheel horizontal_tracking_wheel(&odomRotation, lemlib::Omniwheel::NEW_2,+2.5);
@@ -57,7 +58,7 @@ lemlib::ExpoDriveCurve steer_curve(3, // joystick deadband out of 127
 //lemlib
 lemlib::Drivetrain drivetrain(&leftWheels,
                               &rightWheels,
-                              11.7, //10.8 inches width
+                              11, //10.8 inches width
                               lemlib::Omniwheel::NEW_4,
                               300, //drivetrain rpm
                                 2 // horizontal drift
@@ -75,21 +76,21 @@ lemlib::ControllerSettings lateral_controller(
   0.0, //kI
   10, //kD
   3.0, // anti windup
-  1, // small error range in inches
-  100, // small error range timeout, in miliseconds
-  3, // large error range in inches
-  500, // large error range timeout, in miliseconds
-  50 // max acceleration (slew)
+  0.5, // small error range in inches
+  50, // small error range timeout, in miliseconds
+  1.5, // large error range in inches
+  100, // large error range timeout, in miliseconds
+  5 // max acceleration (slew)
 );
 lemlib::ControllerSettings angular_controller(
-  2.5, // proportional gain (kP)
+  3.2, // proportional gain (kP)
   0.00, // integral gain (kI)
-  15, // derivative gain (kD)
+  18, // derivative gain (kD)
   3, // anti windup
-  1, // small error range, in degrees
-  100, // small error range timeout, in milliseconds
+  1.5, // small error range, in degrees
+  30, // small error range timeout, in milliseconds
   3, // large error range, in degrees
-  500, // large error range timeout, in milliseconds
+  60, // large error range timeout, in milliseconds
   0 // maximum acceleration (slew)
 );
 
