@@ -31,6 +31,7 @@ pros::ADIDigitalOut middleDescore('D', false);
 //inertial Sensor
 pros::Imu inertial(16);
 pros::Distance distLeft(9);
+pros::Distance distStand(8);
 
 //odometry
 pros::Rotation horizontalRotation(15);
