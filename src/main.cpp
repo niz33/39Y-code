@@ -31,7 +31,7 @@ void initialize() {
 	// Control::initialize();
 	// pros::lcd::initialize(); // initialize brain screen
     chassis.calibrate(); // calibrate sensors
-	pros::delay(2000);
+	//pros::delay(2000);
     // print position to brain screen
 	leftWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	rightWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);

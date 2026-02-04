@@ -509,7 +509,7 @@ void Autonomous::skillsAuton(){
 
 
 void scoreHigh(){
-    for(int i=1;i<=180;i++){
+    for(int i=1;i<=140;i++){
         if(distStand.get()<100){
             break;
         }
@@ -529,6 +529,8 @@ void scoreHigh(){
 
 
 void Autonomous::skillsAuton2(){
+
+    int matchLoadTime=2500;
     currentAngle=0;
     chassis.setPose(0,0,-90);
     originalTime = pros::millis();
@@ -547,9 +549,8 @@ void Autonomous::skillsAuton2(){
     intakeMotor.move_voltage(0);
     chassis.setPose(chassis.getPose().x,7.5,chassis.getPose().theta);
     chassis.moveToPoint(chassis.getPose().x,30,1200,{.forwards=false,.maxSpeed=90},false);
-    //get dist in mm and convert to inch
     pros::delay(300);
-    chassis.setPose(distLeft.get()*0.0393701+5,chassis.getPose().y,chassis.getPose().theta);
+    chassis.setPose(distLeft.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926-3.1415926)+5,chassis.getPose().y,chassis.getPose().theta);
 
     //chassis.moveToPose(42,42,45,2000,{.forwards=true,.maxSpeed=90},false);
     
@@ -558,7 +559,9 @@ void Autonomous::skillsAuton2(){
     matchLoad.set_value(true);
     chassis.moveToPoint(56,56,1200,{.forwards=false,.maxSpeed=90},false);
     chassis.turnToPoint(64,64,800,{.forwards=false,.maxSpeed=75},false);
-    chassis.moveToPoint(64,64,1000,{.forwards=false,.maxSpeed=90},false);
+    intakeMotor.move_velocity(-300);
+    outtakeMotor.move_velocity(-600);
+    chassis.moveToPoint(64,64,700,{.forwards=false,.maxSpeed=90},false);
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
     pros::delay(1500);
@@ -569,19 +572,20 @@ void Autonomous::skillsAuton2(){
     chassis.turnToPoint(24,5,1000,{.forwards=true,.maxSpeed=75},false);
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
-    chassis.moveToPoint(24,-10000,2500,{.forwards=true,.maxSpeed=60},true);
-    pros::delay(2500);
+    chassis.moveToPoint(24,-10000,matchLoadTime,{.forwards=true,.maxSpeed=60},false);
+    //pros::delay(matchLoadTime);
     chassis.setPose(chassis.getPose().x,14,chassis.getPose().theta);
 
     //go score long goal
     chassis.moveToPose(16,44,180,2000,{.forwards=false,.maxSpeed=90,.minSpeed=60,.earlyExitRange=6},false);
     matchLoad.set_value(false);
-    // intakeMotor.move_velocity(0);
+    // intakeMotor.move_velocity(0); 
     // outtakeMotor.move_velocity(0);
     chassis.moveToPoint(16,100,1500,{.forwards=false,.maxSpeed=90,.minSpeed=60,.earlyExitRange=5},false);
-    chassis.moveToPose(32,110,-90,1500,{.forwards=false,.maxSpeed=90},false);
-    chassis.turnToPoint(31,80,1000,{.forwards=false,.maxSpeed=75},false);
-    chassis.moveToPoint(31,80,1500,{.forwards=false,.maxSpeed=90},true);
+    chassis.setPose(distLeft.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926-3.1415926),chassis.getPose().y,chassis.getPose().theta);
+    chassis.moveToPose(24,110,-90,1500,{.forwards=false,.maxSpeed=90},false);
+    chassis.turnToPoint(21,80,1000,{.forwards=false,.maxSpeed=75},false);
+    chassis.moveToPoint(21,80,1500,{.forwards=false,.maxSpeed=90},true);
 
     //chassis.moveToPose(28,50,0,1500,{.forwards=false,.maxSpeed=60},true);
     scoreHigh();
@@ -592,8 +596,8 @@ void Autonomous::skillsAuton2(){
     matchLoad.set_value(true);
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
-    chassis.moveToPoint(0,10000,2500,{.forwards=true,.maxSpeed=60},true);
-    pros::delay(2500);
+    chassis.moveToPoint(0,10000,matchLoadTime,{.forwards=true,.maxSpeed=60},false);
+    //pros::delay(matchLoadTime);
     
     chassis.moveToPoint(0,-5,1200,{.forwards=false,.maxSpeed=70},true);
     scoreHigh();
@@ -608,17 +612,17 @@ void Autonomous::skillsAuton2(){
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
     
-    chassis.moveToPose(45,42,85,800,{.forwards=true,.maxSpeed=90},true);
+    chassis.moveToPose(45,42,85,800,{.forwards=true,.maxSpeed=90},false);
     pros::delay(400);
-    matchLoad.set_value(true);
+    //matchLoad.set_value(true);
     
-    chassis.moveToPoint(90,42,3000,{.forwards=true,.maxSpeed=90},true);
+    chassis.moveToPoint(90,42,3000,{.forwards=true,.maxSpeed=90},false);
     pros::delay(500);
-    matchLoad.set_value(false);
+    //matchLoad.set_value(false);
 
     chassis.turnToHeading(0,1000,{.maxSpeed=75},false);
     pros::delay(300);
-    chassis.setPose(0-distLeft.get()*0.0393701,0,chassis.getPose().theta);
+    chassis.setPose(0-distLeft.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926),0,chassis.getPose().theta);
     //score right high
     chassis.moveToPose(-21,-60,0,2000,{.forwards=false,.maxSpeed=90},true);
     
@@ -630,12 +634,12 @@ void Autonomous::skillsAuton2(){
     matchLoad.set_value(true);
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
-    chassis.moveToPoint(0,10000,2500,{.forwards=true,.maxSpeed=60},false);
-    pros::delay(2500);
+    chassis.moveToPoint(0,10000,matchLoadTime,{.forwards=true,.maxSpeed=60},false);
+    //pros::delay(matchLoadTime);
     chassis.setPose(chassis.getPose().x,0,chassis.getPose().theta);
 
     //high goal second
-    chassis.moveToPoint(-35,-44,1200,{.forwards=false,.maxSpeed=90},false);
+    chassis.moveToPoint(-35,-42.5,1200,{.forwards=false,.maxSpeed=90},false);
     pros::delay(1200);
 
     
@@ -643,11 +647,11 @@ void Autonomous::skillsAuton2(){
     chassis.turnToPoint(-16,-95,1000,{.forwards=false,.maxSpeed=75},false);
     chassis.moveToPoint(-16,-100,1800,{.forwards=false,.maxSpeed=90,.minSpeed=60,.earlyExitRange=5},false);
     chassis.turnToHeading(0,400,{.maxSpeed=75},false);
-    chassis.setPose(0-distLeft.get()*0.0393701+5,chassis.getPose().y,chassis.getPose().theta);
-    chassis.moveToPose(-12,-103,-90,2500,{.forwards=false,.minSpeed=50,.earlyExitRange=3},true);
+    chassis.setPose(0-distLeft.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926),chassis.getPose().y,chassis.getPose().theta);
+    chassis.moveToPose(-19,-103,-90,1500,{.forwards=false,.minSpeed=50,.earlyExitRange=3},true);
 
-    chassis.turnToPoint(-11,-70,1000,{.forwards=false,.maxSpeed=75},false);
-    chassis.moveToPoint(-11,-70,1200,{.forwards=false,.maxSpeed=90},true);
+    chassis.turnToPoint(-19,-70,1000,{.forwards=false,.maxSpeed=75},false);
+    chassis.moveToPoint(-19,-70,1200,{.forwards=false,.maxSpeed=90},true);
 
     scoreHigh();
     chassis.setPose(0,0,chassis.getPose().theta);
@@ -655,8 +659,8 @@ void Autonomous::skillsAuton2(){
     matchLoad.set_value(true);
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
-    chassis.moveToPoint(0,-10000,2500,{.forwards=true,.maxSpeed=60},false);
-    pros::delay(2500);
+    chassis.moveToPoint(0,-10000,matchLoadTime,{.forwards=true,.maxSpeed=60},false);
+    //pros::delay(matchLoadTime);
     chassis.moveToPoint(0,5,1500,{.forwards=false,.maxSpeed=70},true);
     scoreHigh();
 
