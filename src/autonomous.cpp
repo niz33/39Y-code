@@ -581,11 +581,11 @@ void Autonomous::skillsAuton2(){
     matchLoad.set_value(false);
     // intakeMotor.move_velocity(0); 
     // outtakeMotor.move_velocity(0);
-    chassis.moveToPoint(16,100,1500,{.forwards=false,.maxSpeed=90,.minSpeed=60,.earlyExitRange=5},false);
+    chassis.moveToPoint(17,100,1500,{.forwards=false,.maxSpeed=90,.minSpeed=60,.earlyExitRange=5},false);
     chassis.setPose(distLeft.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926-3.1415926),chassis.getPose().y,chassis.getPose().theta);
-    chassis.moveToPose(24,110,-90,1500,{.forwards=false,.maxSpeed=90},false);
-    chassis.turnToPoint(21,80,1000,{.forwards=false,.maxSpeed=75},false);
-    chassis.moveToPoint(21,80,1500,{.forwards=false,.maxSpeed=90},true);
+    chassis.moveToPose(23,110,-90,1500,{.forwards=false,.maxSpeed=90},false);
+    chassis.turnToPoint(19,80,1000,{.forwards=false,.maxSpeed=75},false);
+    chassis.moveToPoint(19,80,1500,{.forwards=false,.maxSpeed=90},true);
 
     //chassis.moveToPose(28,50,0,1500,{.forwards=false,.maxSpeed=60},true);
     scoreHigh();
@@ -624,7 +624,7 @@ void Autonomous::skillsAuton2(){
     pros::delay(300);
     chassis.setPose(0-distLeft.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926),0,chassis.getPose().theta);
     //score right high
-    chassis.moveToPose(-21,-60,0,2000,{.forwards=false,.maxSpeed=90},true);
+    chassis.moveToPose(-19.5,-60,0,2000,{.forwards=false,.maxSpeed=90},true);
     
     scoreHigh();
 
@@ -648,10 +648,10 @@ void Autonomous::skillsAuton2(){
     chassis.moveToPoint(-16,-100,1800,{.forwards=false,.maxSpeed=90,.minSpeed=60,.earlyExitRange=5},false);
     chassis.turnToHeading(0,400,{.maxSpeed=75},false);
     chassis.setPose(0-distLeft.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926),chassis.getPose().y,chassis.getPose().theta);
-    chassis.moveToPose(-19,-103,-90,1500,{.forwards=false,.minSpeed=50,.earlyExitRange=3},true);
+    chassis.moveToPose(-16,-103,-90,1500,{.forwards=false,.minSpeed=50,.earlyExitRange=3},true);
 
-    chassis.turnToPoint(-19,-70,1000,{.forwards=false,.maxSpeed=75},false);
-    chassis.moveToPoint(-19,-70,1200,{.forwards=false,.maxSpeed=90},true);
+    chassis.turnToPoint(-16,-70,1000,{.forwards=false,.maxSpeed=75},false);
+    chassis.moveToPoint(-16,-70,1200,{.forwards=false,.maxSpeed=90},true);
 
     scoreHigh();
     chassis.setPose(0,0,chassis.getPose().theta);
