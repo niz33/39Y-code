@@ -84,28 +84,24 @@ void Control::intake(){
         Control::cooldown=0;
 
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
-        // if(cRight.size()>=cDelay&&cRight.front()==0){
-        // //if (cSensor.get_hue()<35){
-        //     countdown=10;
-        // }
-        // if(countdown>0) countdown--;
-        // if(countdown>0){
-        //     midMotor.move_voltage(10000);
-        //     intakeMotor.move_voltage(2000);
+
+        
+        // Control::cooldown++;
+        // if(cooldown>20){
+        //     intakeMotor.move_velocity(600);
+        //     outtakeMotor.move_velocity(-100);
         // }
         // else{
-        
-        Control::cooldown++;
-        if(cooldown>20){
-            intakeMotor.move_velocity(600);
-            outtakeMotor.move_velocity(-100);
-        }
-        else{
-            //intakeMotor.move_voltage(-12000);
-            intakeMotor.move_velocity(-100);
-            outtakeMotor.move_voltage(-12000);
-        }
-        //}
+        //     //intakeMotor.move_voltage(-12000);
+        //     intakeMotor.move_velocity(-100);
+        //     outtakeMotor.move_voltage(-12000);
+        // }
+
+
+        intakeMotor.move_velocity(450 );
+        outtakeMotor.move_velocity(0);
+
+
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
         intakeMotor.move_voltage(12000);
         outtakeMotor.move_velocity(-50);

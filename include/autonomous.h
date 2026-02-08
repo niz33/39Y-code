@@ -20,6 +20,7 @@ class Autonomous{
     static void skillsMove();
     static void skillsAuton();
     static void skillsAuton2();
+    static void skillsAuton3();
     static void print();
     static void RightMidLong();
 
