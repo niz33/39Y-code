@@ -3,26 +3,25 @@
 
 class Autonomous{
     public:
-    static void initialize();
-    static void debug();
-    static void PIDtune();
-    static void turnTo();
-    static void moveTo();
-    static void lateralPIDtune();
-    static void correctHeading();
-    static void matchForward();
-    static void matchLeftAutonBlue();
-    static void matchLeftAuton2();
-    static void matchLeftAuton3();
-    static void matchRightAuton2();
-    static void matchSolo();
+    static void print();
     static void test();
-    static void skillsMove();
-    static void skillsAuton();
+
+    static void matchLeftAutonBlue();
+    static void matchRight2Goal();
+    static void matchRight1Goal();
+    static void matchLeft2Goal();
+    static void matchLeft1Goal();
+    static void matchRightCenter();
+    static void matchLeftCenter();
+    static void matchSolo();
+    static void RightMidLong();
+    
+    static void skillsAuton1();
     static void skillsAuton2();
     static void skillsAuton3();
-    static void print();
-    static void RightMidLong();
+
+    
+    
 
 
     private:
