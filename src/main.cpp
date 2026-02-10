@@ -88,10 +88,10 @@ void autonomous() {
 	//Autonomous::skillsAuton();
 	//Autonomous::matchSolo();
 	//Autonomous::test();
-	//Autonomous::skillsAuton3();
+	Autonomous::skillsAuton3();
 	//Autonomous::matchLeftAutonBlue();
 	//Autonomous::RightMidLong();
-	Autonomous::matchRight2Goal();
+	//Autonomous::matchRight1Goal();
 }
 
 /**

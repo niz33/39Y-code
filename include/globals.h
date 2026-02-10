@@ -43,6 +43,7 @@ extern pros::ADIDigitalOut middleDescore;
 extern pros::Imu inertial;
 
 extern pros::Distance distLeft;
+extern pros::Distance distRight;
 extern pros::Distance distStand;
 
 // //lemlib

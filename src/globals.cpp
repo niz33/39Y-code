@@ -31,6 +31,7 @@ pros::ADIDigitalOut middleDescore('D', false);
 //inertial Sensor
 pros::Imu inertial(16);
 pros::Distance distLeft(9);
+pros::Distance distRight(2);
 pros::Distance distStand(8);
 
 //odometry
@@ -90,7 +91,7 @@ lemlib::ControllerSettings angular_controller(
   3, // anti windup
   1.5, // small error range, in degrees
   30, // small error range timeout, in milliseconds
-  3, // large error range, in degrees
+  4, // large error range, in degrees
   60, // large error range timeout, in milliseconds
   0 // maximum acceleration (slew)
 );
