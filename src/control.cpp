@@ -86,20 +86,40 @@ void Control::intake(){
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
 
         
-        // Control::cooldown++;
-        // if(cooldown>20){
-        //     intakeMotor.move_velocity(600);
-        //     outtakeMotor.move_velocity(-100);
-        // }
-        // else{
-        //     //intakeMotor.move_voltage(-12000);
-        //     intakeMotor.move_velocity(-100);
-        //     outtakeMotor.move_voltage(-12000);
-        // }
+        Control::cooldown++;
+        if(cooldown>20){
+            intakeMotor.move_velocity(600);
+            outtakeMotor.move_velocity(-100);
+        }
+        else{
+            //intakeMotor.move_voltage(-12000);
+            intakeMotor.move_velocity(-100);
+            outtakeMotor.move_voltage(-12000);
+        }
 
 
-        intakeMotor.move_velocity(450 );
-        outtakeMotor.move_velocity(0);
+        intakeMotor.move_velocity(400);
+        outtakeMotor.move_velocity(-50);
+
+
+    }
+     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+
+        
+        Control::cooldown++;
+        if(cooldown>20){
+            intakeMotor.move_velocity(600);
+            outtakeMotor.move_velocity(-100);
+        }
+        else{
+            //intakeMotor.move_voltage(-12000);
+            intakeMotor.move_velocity(-100);
+            outtakeMotor.move_voltage(-12000);
+        }
+
+
+        intakeMotor.move_velocity(300);
+        outtakeMotor.move_velocity(-50);
 
 
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
@@ -112,8 +132,16 @@ void Control::intake(){
         outtakeMotor.move_voltage(-12000);
         Control::middleDescoreDuration++;
         Control::cooldown=0;
+    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+        intakeMotor.move_velocity(300);
+        outtakeMotor.move_velocity(300);
+        Control::cooldown=0;
+    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+        intakeMotor.move_velocity(-300);
+        outtakeMotor.move_velocity(-600);
+        Control::cooldown=0;
     } else {
-        intakeMotor.move_velocity(0);
+        intakeMotor.move_velocity(30);
         outtakeMotor.move_velocity(0);
         Control::cooldown=0;
     }

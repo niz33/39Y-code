@@ -22,6 +22,7 @@ pros::Motor intakeMotor(-14, pros::v5::MotorGears::blue);
 pros::Motor outtakeMotor(-15, pros::v5::MotorGears::blue);
 
 pros::Optical cSensor(1);
+pros::Optical cSensor2(1);
 
 pros::ADIDigitalOut matchLoad('A', false);
 pros::ADIDigitalOut wing('C', false);
@@ -33,6 +34,7 @@ pros::Imu inertial(16);
 pros::Distance distLeft(9);
 pros::Distance distRight(2);
 pros::Distance distStand(8);
+pros::Distance distFront(6);
 
 //odometry
 pros::Rotation horizontalRotation(15);
@@ -106,3 +108,4 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
 );
 
 pros::Task colorSortTask(Autonomous::print);
+//pros::Task colorSortTask(Autonomous::intake);

@@ -1,16 +1,26 @@
 #pragma once
 #include "main.h"
 
+enum color{
+    red,
+    blue,
+    none
+};
+
 class Autonomous{
     public:
     static void print();
     static void test();
+    static void distTest();
+    static void intake();
 
-    static void matchLeftAutonBlue();
-    static void matchRight2Goal();
-    static void matchRight1Goal();
+    static int intaking;
+    static double jamFlag;
+
     static void matchLeft2Goal();
     static void matchLeft1Goal();
+    static void matchRight2Goal();
+    static void matchRight1Goal();
     static void matchRightCenter();
     static void matchLeftCenter();
     static void matchSolo();

@@ -23,9 +23,14 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	 pros::lcd::initialize();
-	 pros::lcd::set_text(1, "Hello PROS User!");
+	  pros::lcd::initialize();
+	//  pros::lcd::print(1, "Hello PROS User pls print!");
+	//  pros::lcd::print(2, "Y: %f", distLeft.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926));
 
+	pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
+        pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
+        
+	 
 	// pros::lcd::register_btn1_cb(on_center_button);
 	// // Autonomous::initialize();
 	// Control::initialize();
@@ -33,12 +38,17 @@ void initialize() {
     chassis.calibrate(); // calibrate sensors
 	//pros::delay(2000);
     // print position to brain screen
+	//pros::lcd::print(1, "Theta: %f", chassis.getPose().theta); // heading
+        
 	leftWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	rightWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	intakeMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
     outtakeMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
 	matchLoad.set_value(false);
-	wing.set_value(false);  
+	wing.set_value(false);
+	
+	//Autonomous::distTest();
+
        
 }
 
@@ -73,6 +83,7 @@ void competition_initialize() {}
  */
 void autonomous() {
 	cSensor.set_led_pwm(100);
+	cSensor.set_led_pwm(100);
 	
 	//chassis.calibrate(); // calibrate sensors
 	//pros::delay(2000);
@@ -88,10 +99,12 @@ void autonomous() {
 	//Autonomous::skillsAuton();
 	//Autonomous::matchSolo();
 	//Autonomous::test();
-	Autonomous::skillsAuton3();
+	//Autonomous::skillsAuton2();
 	//Autonomous::matchLeftAutonBlue();
 	//Autonomous::RightMidLong();
 	//Autonomous::matchRight1Goal();
+	Autonomous::matchLeft2Goal();
+	//Autonomous::distTest();
 }
 
 /**

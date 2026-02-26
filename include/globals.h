@@ -24,6 +24,7 @@ extern pros::Motor intakeMotor;
 extern pros::Motor outtakeMotor;
 
 extern pros::Optical cSensor;
+extern pros::Optical cSensor2;
 
 //horizontal odometry
 extern pros::Rotation horizontalRotation;
@@ -45,6 +46,7 @@ extern pros::Imu inertial;
 extern pros::Distance distLeft;
 extern pros::Distance distRight;
 extern pros::Distance distStand;
+extern pros::Distance distFront;
 
 // //lemlib
 extern lemlib::Drivetrain drivetrain;
