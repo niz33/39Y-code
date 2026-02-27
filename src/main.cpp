@@ -99,11 +99,14 @@ void autonomous() {
 	//Autonomous::skillsAuton();
 	//Autonomous::matchSolo();
 	//Autonomous::test();
+
 	//Autonomous::skillsAuton2();
 	//Autonomous::matchLeftAutonBlue();
 	//Autonomous::RightMidLong();
+	//Autonomous::matchRight2Goal();
 	//Autonomous::matchRight1Goal();
-	Autonomous::matchLeft2Goal();
+	//Autonomous::matchLeft1Goal();
+	Autonomous::matchLeft1Goal();
 	//Autonomous::distTest();
 }
 
