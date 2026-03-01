@@ -91,7 +91,7 @@ void scoreLong(){
     outtakeMotor.move_velocity(0);
 }
 
-void scoreLongMatch(color c=color::none,int scoringTime=1700){
+void scoreLongMatch(color c=color::none,int scoringTime=1900){
     for(int i=1;i<=140;i++){
         if(distStand.get()<130){
             break;
@@ -152,8 +152,11 @@ void descore(){
 
     matchLoad.set_value(false);
     chassis.moveToPoint(0,-15,1200,{.forwards=true,.minSpeed=30,.earlyExitRange=3},false);
-    chassis.moveToPose(8.1,15,180,2000,{.forwards=false, .minSpeed=60,.earlyExitRange=10},false);
-    chassis.moveToPose(10,17,180,12000,{.forwards=false, .minSpeed=90},false);
+    chassis.moveToPose(7,15,180,2000,{.forwards=false, .minSpeed=60,.earlyExitRange=10},false);
+    chassis.moveToPose(9,17,180,2000,{.forwards=false, .minSpeed=90},false);
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+
+ 
 
     
 }
@@ -332,10 +335,10 @@ void Autonomous::matchRight1Goal(){
     chassis.turnToPoint(34,-20,1500,{.forwards=true,.maxSpeed=75},false);
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
-    chassis.moveToPoint(35,-25,1200,{.forwards=true,.maxSpeed=50},true);
-    pros::delay(1000);
+    chassis.moveToPoint(33,-25,1200,{.forwards=true,.maxSpeed=50},true);
+    pros::delay(900);
     chassis.moveToPoint(35,20,1200,{.forwards=false,.maxSpeed=90},true);
-    scoreLongMatch(color::blue);
+    scoreLongMatch(color::red);
 
     chassis.setPose(0,0,chassis.getPose().theta);
     descore();
@@ -351,7 +354,7 @@ void Autonomous::matchSolo(){
     intakeMotor.move_voltage(12000);
     outtakeMotor.move_velocity(-50);
 
-    chassis.moveToPoint(-5,0,500,{.forwards=true},false);
+    chassis.moveToPoint(-7,0,500,{.forwards=true},false);
     chassis.moveToPoint(48,0,1500,{.forwards=false},false);
     matchLoad.set_value(true);
     chassis.turnToPoint(48,-25,1200,{.forwards=true,.maxSpeed=80},false);
@@ -385,7 +388,8 @@ void Autonomous::matchSolo(){
     
     //chassis.turnToPoint(-68,1,800,{.forwards=true,.maxSpeed=80},false);
     
-    chassis.moveToPoint(-68,0,1500,{.forwards=true,.maxSpeed=120,.minSpeed=30,.earlyExitRange=12.5},false);
+    chassis.moveToPoint(-68,0,1500,{.forwards=true,.maxSpeed=120,.minSpeed=30,.earlyExitRange=17},false);
+    chassis.moveToPoint(-68,0,1500,{.forwards=true,.maxSpeed=80,.minSpeed=30,.earlyExitRange=12.5},false);
     matchLoad.set_value(true);
     chassis.moveToPoint(-68,0,500,{.forwards=true,.maxSpeed=80},false);
     
@@ -394,16 +398,19 @@ void Autonomous::matchSolo(){
     //score high goal
     chassis.turnToPoint(-48.5,16,1000,{.forwards=false,.maxSpeed=80},false);
     
-    chassis.moveToPoint(-48.5,16,1000,{.forwards=false,.maxSpeed=80},true);
-    intakeMotor.move_velocity(-180);
-    outtakeMotor.move_velocity(-600);
-    pros::delay(300);
+    chassis.moveToPoint(-48.5,16,1000,{.forwards=false,.maxSpeed=80, .minSpeed = 50},true);
     intakeMotor.move_velocity(0);
     outtakeMotor.move_velocity(0);
-    pros::delay(100);
+    pros::delay(300);
+    intakeMotor.move_velocity(-300);
+    outtakeMotor.move_velocity(-600);
+    pros::delay(250);
+    intakeMotor.move_velocity(0);
+    outtakeMotor.move_velocity(0);
+    pros::delay(150);
     intakeMotor.move_velocity(450);
     outtakeMotor.move_velocity(0);
-    pros::delay(1000);
+    pros::delay(1100);
 
     //go to long goal
     intakeMotor.move_velocity(0);
@@ -415,8 +422,8 @@ void Autonomous::matchSolo(){
     chassis.setPose(distLeft.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926-3.1415926),chassis.getPose().y,chassis.getPose().theta);
     intakeMotor.move_voltage(12000);
     chassis.moveToPoint(18,-45,1000,{.forwards=true,.maxSpeed=70,.minSpeed=30,.earlyExitRange=20},false);
-    chassis.moveToPoint(18,-45,1000,{.forwards=true,.maxSpeed=60,.minSpeed=30,.earlyExitRange=15},false);
-    chassis.moveToPoint(18,-45,800,{.forwards=true,.maxSpeed=40},false);
+    chassis.moveToPoint(18,-45,940,{.forwards=true,.maxSpeed=60,.minSpeed=30,.earlyExitRange=15},false);
+    chassis.moveToPoint(18,-45,600,{.forwards=true,.maxSpeed=40},false);
 
     chassis.moveToPoint(17.5,20,1200,{.forwards=false,.maxSpeed=100},true);
 
@@ -445,7 +452,7 @@ void Autonomous::matchSolo(){
 void scoreSeven(){
     intakeMotor.move_velocity(300);
     outtakeMotor.move_velocity(-50);
-    for(int i=1;i<=130;i++){
+    for(int i=1;i<=120;i++){
         if(cSensor2.get_hue()<30){
             pros::delay(50);
             break;
@@ -483,12 +490,13 @@ void Autonomous::skillsAuton2(){
     intakeMotor.move_voltage(12000);
     outtakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     outtakeMotor.move_velocity(0);
-    chassis.moveToPoint(-60,0,300,{.forwards=true,.maxSpeed=70},false);
+    chassis.moveToPoint(-60,0,600,{.forwards=true,.maxSpeed=70},false);
+    chassis.moveToPoint(-60,0,1700,{.forwards=true,.maxSpeed=80},true);
+
     matchLoad.set_value(true);
     pros::delay(500);
     matchLoad.set_value(false);
-    chassis.moveToPoint(-60,0,1700,{.forwards=true,.maxSpeed=80},true);
-
+    
     //calibration
     chassis.turnToHeading(180,1000,{.maxSpeed=75},false);
 
@@ -507,13 +515,13 @@ void Autonomous::skillsAuton2(){
     chassis.moveToPoint(56,56,1500,{.forwards=false,.maxSpeed=90},false);
     chassis.turnToPoint(66,66,600,{.forwards=false,.maxSpeed=75},false);
     pros::delay(200);
-    intakeMotor.move_velocity(-250);
-    outtakeMotor.move_velocity(0);
+    intakeMotor.move_velocity(-200);
+    outtakeMotor.move_velocity(-600);
     chassis.moveToPoint(65,65,500,{.forwards=false,.maxSpeed=90},false);
     intakeMotor.move_velocity(450);
     outtakeMotor.move_velocity(0);
     pros::delay(1100);
-    intakeMotor.move_velocity(-200);
+    intakeMotor.move_velocity(-150);
     outtakeMotor.move_velocity(-600);
     pros::delay(200);
     intakeMotor.move_velocity(550);
@@ -632,6 +640,8 @@ void Autonomous::skillsAuton2(){
                     5.5-distFront.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926),
                     chassis.getPose().theta);
 
+
+    intakeMotor.move_velocity(50);
 
     //high goal second
     //chassis.moveToPoint(chassis.getPose().x,5,300,{.forwards=false,.maxSpeed=90},true);

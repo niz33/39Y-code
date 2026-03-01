@@ -104,9 +104,9 @@ void autonomous() {
 	//Autonomous::matchLeftAutonBlue();
 	//Autonomous::RightMidLong();
 	//Autonomous::matchRight2Goal();
-	//Autonomous::matchRight1Goal();
+	Autonomous::matchRight1Goal();
 	//Autonomous::matchLeft1Goal();
-	Autonomous::matchLeft1Goal();
+	//Autonomous::matchLeft2Goal();
 	//Autonomous::distTest();
 }
 
