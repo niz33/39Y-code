@@ -8,18 +8,18 @@ pros::Controller master(pros::E_CONTROLLER_MASTER);
 pros::Motor leftWheel1(11, pros::v5::MotorGears::blue);
 pros::Motor leftWheel2(-12, pros::v5::MotorGears::blue);
 pros::Motor leftWheel3(-13, pros::v5::MotorGears::blue);
-// pros::MotorGroup leftWheels({-13},pros::v5::MotorGears::blue);
-pros::MotorGroup leftWheels({11,-12,-13},pros::v5::MotorGears::blue);
+pros::MotorGroup leftWheels({18,-19,-20},pros::v5::MotorGears::blue);
 
 pros::Motor rightWheel1(18,pros::v5::MotorGears::blue);
 pros::Motor rightWheel2(17,pros::v5::MotorGears::blue);
 pros::Motor rightWheel3(-20,pros::v5::MotorGears::blue);
-// pros::MotorGroup rightWheels({16},pros::v5::MotorGears::blue);
-pros::MotorGroup rightWheels({18,17,-20},pros::v5::MotorGears::blue); 
+pros::MotorGroup rightWheels({11,12,-13},pros::v5::MotorGears::blue); 
 
 //intake
-pros::Motor intakeMotor(-14, pros::v5::MotorGears::blue);
-pros::Motor outtakeMotor(-15, pros::v5::MotorGears::blue);
+pros::Motor intakeMotor(-2, pros::v5::MotorGears::rpm_200);
+pros::Motor midMotor(8, pros::v5::MotorGears::rpm_200);
+pros::Motor outtakeMotor(-9, pros::v5::MotorGears::rpm_200);
+pros::Motor sortMotor(-3, pros::v5::MotorGears::rpm_200);
 
 pros::Optical cSensor(1);
 pros::Optical cSensor2(1);
@@ -33,11 +33,11 @@ pros::ADIDigitalOut middleDescore('D', false);
 pros::Imu inertial(16);
 pros::Distance distLeft(9);
 pros::Distance distRight(2);
-pros::Distance distStand(8);
-pros::Distance distFront(6);
+pros::Distance distFront(2);
+pros::Distance distBack(6);
 
 //odometry
-pros::Rotation horizontalRotation(15);
+pros::Rotation horizontalRotation(2);
 pros::Rotation verticalRotation(-14);
 
 //lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalRotation, lemlib::Omniwheel::NEW_275, 2.65);
@@ -45,7 +45,7 @@ pros::Rotation verticalRotation(-14);
 //lemlib::TrackingWheel vertical_tracking_wheel(&verticalRotation, lemlib::Omniwheel::NEW_275, 0.625);
 
 
-// lemlib::TrackingWheel horizontal_tracking_wheel(&odomRotation, lemlib::Omniwheel::NEW_2,+2.5);
+lemlib::TrackingWheel horizontal_tracking_wheel(&verticalRotation, lemlib::Omniwheel::NEW_2,+2.5);
 
 
 lemlib::ExpoDriveCurve throttle_curve(3, // joystick deadband out of 127
@@ -62,15 +62,15 @@ lemlib::ExpoDriveCurve steer_curve(3, // joystick deadband out of 127
 //lemlib
 lemlib::Drivetrain drivetrain(&leftWheels,
                               &rightWheels,
-                              11, //10.8 inches width
-                              lemlib::Omniwheel::NEW_4,
-                              300, //drivetrain rpm
+                              10.9, //10.8 inches width
+                              lemlib::Omniwheel::NEW_325,
+                              450, //drivetrain rpm
                                 2 // horizontal drift
 );
 
-lemlib::OdomSensors sensors(nullptr, //&vertical_tracking_wheel,
+lemlib::OdomSensors sensors(nullptr, //&vertical_tracking_wheel
                             nullptr,
-                            nullptr,
+                            &horizontal_tracking_wheel, // horizontal tracking wheel
                             nullptr,
                             &inertial // inertial sensor
 );
@@ -107,5 +107,5 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
                         &steer_curve
 );
 
-pros::Task colorSortTask(Autonomous::print);
-//pros::Task colorSortTask(Autonomous::intake);
+pros::Task printTask(Autonomous::print);
+pros::Task intakeTask(Control::intake);

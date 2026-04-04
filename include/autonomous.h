@@ -10,6 +10,7 @@ enum color{
 class Autonomous{
     public:
     static void print();
+    
     static void test();
     static void distTest();
     static void intake();

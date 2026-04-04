@@ -11,44 +11,17 @@ int Control::cDelay = 3;
 int Control::countdown = 0;
 int Control::cooldown = 0;
 int Control::middleDescoreDuration = 0;
+Control::IntakeState Control::intakeState = Control::non;
+Control::ScoringColor Control::scoringColor = Control::red;
+Control::ColorSortingType Control::colorSortingType = Control::none;
+double Control::IntakeTorque = 0;
+double Control::OuttakeTorque = 0;
+double Control::SortTorque = 0;
+double Control::MidTorque = 0;
+int Control::storageTime=0;
 
 std::queue<int> Control::cRight;
-void Control::driveCodeArcade(){
-
-    // double forward = Utilities::drive_control_map(master.get_analog(ANALOG_LEFT_Y));
-    // if(abs(forward)<0.1) forward=0;
-
-    // double turn = Utilities::drive_control_map(master.get_analog(ANALOG_RIGHT_X));
-    // if(abs(turn)<0.1) turn=0;
-    // double left=forward*500+turn*(300+forward*100);
-    // double right=forward*500-turn*(300+forward*100);
-    // if(left>600){
-    //     int df=left-600;
-    //     left=600;
-    //     right-=df;
-    // }
-    // if(left<-600){
-    //     int df=left+600;
-    //     left=-600;
-    //     right-=df;
-    // }
-    // if(right>600){
-    //     int df=right-600;
-    //     right=600;
-    //     left-=df;
-    // }
-    // if(right<-600){
-    //     int df=right+600;
-    //     right=-600;
-    //     left-=df;
-    // }
-
-    // DriveTrain::move_velocity(Utilities::bound_by(-600,600,left),Utilities::bound_by(-600,600,right));
-    
-    // if(turn==0&&forward==0){
-    //     //DriveTrain::stopLeft();
-    //     //DriveTrain::stopRight();
-    // }
+void Control::drive(){
 
 
     // get left y and right x positions
@@ -57,56 +30,25 @@ void Control::driveCodeArcade(){
 
     // move the robot
     // prioritize steering slightly
-    chassis.arcade(0-leftY, leftX, false, 0.75);
-}
+    chassis.arcade(leftY, leftX, false, 0.75);
 
-void Control::driveCodeTank(){
-    double left = Utilities::drive_control_map(master.get_analog(ANALOG_LEFT_Y));
-    double right = Utilities::drive_control_map(master.get_analog(ANALOG_RIGHT_Y));
-
-    // if(left==0){
-    //     DriveTrain::stopLeft();
-    // }
-    // if(right==0){
-    //     DriveTrain::stopRight();
-    // }
-    DriveTrain::move_velocity(left*600,right*600);
-}
-
-void Control::intake(){
     int temp=1;
     if (cSensor.get_hue()<35) temp=0;
     cRight.push(temp);
 
     if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-        intakeMotor.move_voltage(12000);
-        outtakeMotor.move_voltage(12000);
-        Control::cooldown=0;
+        intakeState=longGoal;
 
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
 
         
-        Control::cooldown++;
-        if(cooldown>20){
-            intakeMotor.move_velocity(600);
-            outtakeMotor.move_velocity(-100);
-        }
-        else{
-            //intakeMotor.move_voltage(-12000);
-            intakeMotor.move_velocity(-100);
-            outtakeMotor.move_voltage(-12000);
-        }
-
-
-        intakeMotor.move_velocity(400);
-        outtakeMotor.move_velocity(-50);
+        intakeState=highGoal;
 
 
     }
      else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
 
         
-        Control::cooldown++;
         if(cooldown>20){
             intakeMotor.move_velocity(600);
             outtakeMotor.move_velocity(-100);
@@ -123,15 +65,9 @@ void Control::intake(){
 
 
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-        intakeMotor.move_voltage(12000);
-        outtakeMotor.move_velocity(-50);
-       
-        Control::cooldown=0;
+        intakeState=storage;
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-        intakeMotor.move_voltage(-12000);
-        outtakeMotor.move_voltage(-12000);
-        Control::middleDescoreDuration++;
-        Control::cooldown=0;
+        intakeState=lowGoal;
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
         intakeMotor.move_velocity(300);
         outtakeMotor.move_velocity(300);
@@ -141,8 +77,7 @@ void Control::intake(){
         outtakeMotor.move_velocity(-600);
         Control::cooldown=0;
     } else {
-        intakeMotor.move_velocity(30);
-        outtakeMotor.move_velocity(0);
+        intakeState=non;
         Control::cooldown=0;
     }
 
@@ -152,17 +87,7 @@ void Control::intake(){
     if(cRight.size()>=cDelay){
         cRight.pop();
     }
-}
 
-
-void Control::initialize(){
-    intakeMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
-    outtakeMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
-    leftWheels.set_brake_mode_all(MOTOR_BRAKE_COAST);
-    rightWheels.set_brake_mode_all(MOTOR_BRAKE_COAST);
-}
-
-void Control::park(){
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
         // if(Control::middleDescoreDuration>0&&Control::middleDescoreDuration<15){
         //     Control::middleDescoring=!Control::middleDescoring;
@@ -199,14 +124,126 @@ void Control::park(){
     else{
         Control::lastR2=false;
     }
+
+    intake();
+}
+
+
+void Control::initialize(){
+    intakeMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
+    outtakeMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
+    leftWheels.set_brake_mode_all(MOTOR_BRAKE_COAST);
+    rightWheels.set_brake_mode_all(MOTOR_BRAKE_COAST);
 }
 
 
 
+
+
 void Control::update(){
-    Control::driveCodeArcade();
-    Control::intake();
-    Control::park();
+    Control::drive();
     // Control::grabber();
     // Control::wallStake();
+}
+
+void Control::intake(){
+
+    
+
+    if(intakeState==longGoal){
+        intakeMotor.move_voltage(12000);
+        midMotor.move_voltage(12000);
+        sortMotor.move_voltage(12000);
+        outtakeMotor.move_voltage(12000);
+    }
+    if(intakeState==highGoal){
+        intakeMotor.move_voltage(12000);
+        midMotor.move_voltage(12000);
+        sortMotor.move_voltage(-12000);
+        outtakeMotor.move_velocity(100);
+    }
+    if(intakeState==lowGoal){
+        intakeMotor.move_voltage(-12000);
+        midMotor.move_voltage(-12000);
+        sortMotor.move_velocity(-60);
+        outtakeMotor.move_voltage(-12000);
+    }
+    if(intakeState==storage){
+        storageTime++;
+        if(storageTime>10){
+            IntakeTorque*=0.8;
+            IntakeTorque+=0.2*intakeMotor.get_torque();
+            OuttakeTorque*=0.8;
+            OuttakeTorque+=0.2*outtakeMotor.get_torque();
+            SortTorque*=0.8;
+            SortTorque+=0.2*sortMotor.get_torque();
+            MidTorque*=0.8;
+            MidTorque+=0.2*midMotor.get_torque();
+        }
+
+        intakeMotor.move_voltage(12000);
+        //midMotor.move_voltage(12000);
+        // sortMotor.move_voltage(12000);
+        // outtakeMotor.move_voltage(12000);
+        
+        // intakeMotor.move_voltage(12000);
+        midMotor.move_velocity(70);
+        outtakeMotor.move_voltage(1000);
+        sortMotor.move_voltage(800);
+
+
+        if(cSensor.get_hue()>80){
+            if(SortTorque<0.15){
+                outtakeMotor.move_velocity(40);
+            }
+        }
+
+        if(cSensor2.get_hue()<20){
+            if(SortTorque<0.15){
+                midMotor.move_voltage(10000);
+                outtakeMotor.move_velocity(-50);
+            }
+            else{
+                midMotor.move_voltage(10000);
+            }
+            
+        }
+
+        if(SortTorque>0.15){
+            midMotor.move_voltage(2000);
+        }
+
+        // if(SortTorque>0.15){
+        //     sortMotor.move_voltage(2000);
+        //     if(OuttakeTorque>0.145){
+        //         outtakeMotor.move_voltage(1000);
+        //         if(MidTorque>0.2){
+        //             outtakeMotor.move_voltage(500);
+        //             midMotor.move_voltage(4500);
+        //             if(MidTorque>0.4){
+        //                 midMotor.move_voltage(700);
+        //             }
+        //         }
+        //     }
+        // }
+
+
+        
+
+        
+
+        
+
+
+    }else{
+        storageTime=0;
+    }
+
+    if(intakeState==non){
+        intakeMotor.move_voltage(0);
+        midMotor.move_voltage(0);
+        sortMotor.move_voltage(0);
+        outtakeMotor.move_voltage(0);
+    }
+
 }

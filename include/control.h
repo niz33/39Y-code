@@ -3,21 +3,46 @@
 #include <queue>
 
 class Control{
-    private:
-        static void driveCodeTank();
-        static void driveCodeArcade();
-        static void intake();
-        static void park();
-        static void wallStake();
+    public:
+        static void drive();
 
+        static void intake();
+
+        enum IntakeState{
+            longGoal,
+            highGoal,
+            lowGoal,
+            storage,
+            non,
+        };
+
+        enum ScoringColor{
+            red,
+            blue,
+        };
+
+        enum ColorSortingType{
+            stop,
+            sort,
+            none,
+        };
         
-        
+        static IntakeState intakeState;
+        static ScoringColor scoringColor;
+        static ColorSortingType colorSortingType;
 
         static int cDelay;
         static std::queue<int> cRight;
         static int countdown;
         static int cooldown;
         static int middleDescoreDuration;
+
+        static double IntakeTorque;
+        static double OuttakeTorque;
+        static double SortTorque;
+        static double MidTorque;
+
+        static int storageTime;
 
     public:
         static bool load;
@@ -31,5 +56,4 @@ class Control{
         
         static void update();
         static void initialize();
-        static void intakeVelocity(int v);
 };

@@ -22,6 +22,8 @@ extern pros::MotorGroup rightWheels;
 //intake
 extern pros::Motor intakeMotor;
 extern pros::Motor outtakeMotor;
+extern pros::Motor sortMotor;
+extern pros::Motor midMotor;
 
 extern pros::Optical cSensor;
 extern pros::Optical cSensor2;
@@ -45,8 +47,8 @@ extern pros::Imu inertial;
 
 extern pros::Distance distLeft;
 extern pros::Distance distRight;
-extern pros::Distance distStand;
 extern pros::Distance distFront;
+extern pros::Distance distBack;
 
 // //lemlib
 extern lemlib::Drivetrain drivetrain;
@@ -55,4 +57,5 @@ extern lemlib::ControllerSettings lateral_controller;
 extern lemlib::ControllerSettings angular_controller;
 extern lemlib::Chassis chassis;
 
-extern pros::Task colorSortTask;
+extern pros::Task printTask;
+extern pros::Task intakeTask;
