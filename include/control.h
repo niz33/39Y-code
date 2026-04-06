@@ -8,10 +8,13 @@ class Control{
 
         static void intake();
 
+        static void motorUpdate();
+
         enum IntakeState{
             longGoal,
             highGoal,
             lowGoal,
+            lowGoalCooling,
             storage,
             non,
         };
@@ -41,8 +44,15 @@ class Control{
         static double OuttakeTorque;
         static double SortTorque;
         static double MidTorque;
+        static double SortVelocity;
 
         static int storageTime;
+        static int highGoalTime;
+        static int lowGoalCooldown;
+
+        static double outtakeTargetVelocity;
+        static double outtakeIntegral;
+
 
     public:
         static bool load;

@@ -8,8 +8,8 @@ void Autonomous::print(){
         pros::lcd::print(2, "Theta: %f", chassis.getPose().theta);
         pros::lcd::print(3, "Intake: %f", Control::IntakeTorque);
         pros::lcd::print(4, "Mid: %f", Control::MidTorque);
-        pros::lcd::print(5, "Sort: %f", Control::SortTorque);
-        pros::lcd::print(6, "Outtake: %f", Control::OuttakeTorque);
+        pros::lcd::print(5, "Sort: %f", Control::SortVelocity);
+        pros::lcd::print(6, "Outtake: %f", Control::outtakeIntegral);
         pros::lcd::print(7, "Color: %f", cSensor.get_hue());
 
         pros::delay(50);

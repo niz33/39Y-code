@@ -18,7 +18,13 @@ double Control::IntakeTorque = 0;
 double Control::OuttakeTorque = 0;
 double Control::SortTorque = 0;
 double Control::MidTorque = 0;
+double Control::SortVelocity = 0;
 int Control::storageTime=0;
+int Control::highGoalTime=0;
+int Control::lowGoalCooldown=0;
+double Control::outtakeTargetVelocity=0;
+double Control::outtakeIntegral=0;
+
 
 std::queue<int> Control::cRight;
 void Control::drive(){
@@ -125,7 +131,6 @@ void Control::drive(){
         Control::lastR2=false;
     }
 
-    intake();
 }
 
 
@@ -142,11 +147,17 @@ void Control::initialize(){
 
 void Control::update(){
     Control::drive();
-    // Control::grabber();
-    // Control::wallStake();
+    Control::intake();
+    Control::motorUpdate();
 }
 
 void Control::intake(){
+
+    if(lowGoalCooldown>0&&intakeState!=lowGoal){
+        lowGoalCooldown--;
+        intakeState=lowGoalCooling;
+        sortMotor.move_voltage(200);
+    }
 
     
 
@@ -157,15 +168,33 @@ void Control::intake(){
         outtakeMotor.move_voltage(12000);
     }
     if(intakeState==highGoal){
-        intakeMotor.move_voltage(12000);
-        midMotor.move_voltage(12000);
+        highGoalTime++;
         sortMotor.move_voltage(-12000);
-        outtakeMotor.move_velocity(100);
+        if(highGoalTime<20&&dSensor.get()<70){
+            outtakeTargetVelocity=30;
+            if(highGoalTime<10){
+                intakeMotor.move_voltage(0);
+                midMotor.move_voltage(0);
+            } 
+        }
+        else{
+            intakeMotor.move_voltage(12000);
+            midMotor.move_voltage(12000);
+            outtakeMotor.move_velocity(100);
+            outtakeTargetVelocity=1000;
+        }
+        
+        
+        
+    }else{
+        highGoalTime=0;
+        
     }
     if(intakeState==lowGoal){
+        lowGoalCooldown=5;
         intakeMotor.move_voltage(-12000);
         midMotor.move_voltage(-12000);
-        sortMotor.move_velocity(-60);
+        sortMotor.move_voltage(-12000);
         outtakeMotor.move_voltage(-12000);
     }
     if(intakeState==storage){
@@ -180,6 +209,10 @@ void Control::intake(){
             MidTorque*=0.8;
             MidTorque+=0.2*midMotor.get_torque();
         }
+        if(storageTime>40){
+            SortVelocity*=0.8;
+            SortVelocity+=0.2*sortMotor.get_actual_velocity();
+        }
 
         intakeMotor.move_voltage(12000);
         //midMotor.move_voltage(12000);
@@ -187,30 +220,36 @@ void Control::intake(){
         // outtakeMotor.move_voltage(12000);
         
         // intakeMotor.move_voltage(12000);
-        midMotor.move_velocity(70);
-        outtakeMotor.move_voltage(1000);
-        sortMotor.move_voltage(800);
+        midMotor.move_voltage(4500);
+        outtakeMotor.move_voltage(0);
+        sortMotor.move_voltage(400);
+        outtakeTargetVelocity=1000;
 
 
-        if(cSensor.get_hue()>80){
-            if(SortTorque<0.15){
-                outtakeMotor.move_velocity(40);
+        if(cSensor.get_hue()>80||cSensor.get_hue()<20){
+            if(dSensor.get()>70){
+                outtakeTargetVelocity=70;
+                //midMotor.move_voltage(3500);
+                //sortMotor.move_voltage(800);
             }
         }
 
-        if(cSensor2.get_hue()<20){
-            if(SortTorque<0.15){
-                midMotor.move_voltage(10000);
-                outtakeMotor.move_velocity(-50);
-            }
-            else{
-                midMotor.move_voltage(10000);
-            }
+        // if(cSensor2.get_hue()<20){
+        //     if(SortVelocity>3){
+        //         midMotor.move_voltage(10000);
+        //         outtakeMotor.move_velocity(-50);
+        //     }
+        //     else{
+        //         midMotor.move_voltage(10000);
+        //     }
             
-        }
+        // }
 
-        if(SortTorque>0.15){
+        if(dSensor.get()<70){
             midMotor.move_voltage(2000);
+            sortMotor.move_voltage(1000);
+            outtakeMotor.move_voltage(1000);
+            //outtakeMotor.move_voltage(800);
         }
 
         // if(SortTorque>0.15){
@@ -227,16 +266,9 @@ void Control::intake(){
         //     }
         // }
 
-
-        
-
-        
-
-        
-
-
     }else{
         storageTime=0;
+        outtakeTargetVelocity=1000;
     }
 
     if(intakeState==non){
@@ -246,4 +278,16 @@ void Control::intake(){
         outtakeMotor.move_voltage(0);
     }
 
+}
+
+
+void Control::motorUpdate(){
+    if(outtakeTargetVelocity!=1000){
+        double v=outtakeMotor.get_actual_velocity();
+        double error=outtakeTargetVelocity-v;
+        double kP=50, kI=1;
+        outtakeIntegral+=error;
+        double output=kP*error+kI*outtakeIntegral;
+        outtakeMotor.move_voltage(output);
+    }
 }

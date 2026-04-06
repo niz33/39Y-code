@@ -23,6 +23,7 @@ pros::Motor sortMotor(-3, pros::v5::MotorGears::rpm_200);
 
 pros::Optical cSensor(1);
 pros::Optical cSensor2(1);
+pros::Distance dSensor(6);
 
 pros::ADIDigitalOut matchLoad('A', false);
 pros::ADIDigitalOut wing('C', false);
