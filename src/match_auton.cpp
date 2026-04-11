@@ -1,4 +1,4 @@
-// #include "main.h"
+#include "main.h"
 
 // void Autonomous::matchLeft2Goal(){
 //     currentAngle=0;
@@ -110,48 +110,47 @@
 
 
 
-// void Autonomous::matchRight2Goal(){
-//     chassis.setPose(0,0,0);
+void Autonomous::matchRight2Goal(){
+    chassis.setPose(0,0,180);
     
-//     matchLoad.set_value(false);
-//     intakeMotor.move_voltage(12000);
-//     outtakeMotor.move_velocity(0);
+    matchLoad.set_value(false);
+    Control::intakeState = Control::IntakeState::storage;
 
 
-//     chassis.turnToPoint(10,21,700,{.forwards=true,.maxSpeed=75},false);
-//     chassis.moveToPoint(10,21,1200,{.forwards=true,.maxSpeed=90,.minSpeed=90,.earlyExitRange=10},false);
-//     matchLoad.set_value(true);
-//     chassis.moveToPoint(10,21,1200,{.forwards=true,.maxSpeed=50},false);
-//     matchLoad.set_value(false);
-//     chassis.turnToPoint(-4,31,800,{.forwards=true,.maxSpeed=75},false);
-//     middleDescore.set_value(true);
-//     chassis.moveToPoint(-4,31,1100,{.forwards=true,.maxSpeed=90},false);
-//     intakeMotor.move_velocity(-400);
-//     pros::delay(900);
+    chassis.turnToPoint(10,21,700,{.forwards=false,.maxSpeed=75},false);
+    chassis.moveToPoint(10,21,1200,{.forwards=false,.maxSpeed=90,.minSpeed=90,.earlyExitRange=15},false);
+    //matchLoad.set_value(true);
+    chassis.moveToPoint(10,21,1200,{.forwards=false,.maxSpeed=50},false);
+    matchLoad.set_value(false);
+    chassis.turnToPoint(2,33,800,{.forwards=false,.maxSpeed=75},false);
+    //middleDescore.set_value(true);
+    chassis.moveToPoint(1,34,800,{.forwards=false,.maxSpeed=60},false);
+    Control::intakeState = Control::IntakeState::lowGoal;
+    pros::delay(1000);
 
 
-//     intakeMotor.move_velocity(0);
-//     matchLoad.set_value(true);
-//     middleDescore.set_value(false);
-//     chassis.moveToPoint(33,0,1200,{.forwards=false,.maxSpeed=90,.minSpeed=30,.earlyExitRange=3},false);
-//     chassis.turnToPoint(33,-20,1500,{.forwards=true,.maxSpeed=75},false);
-//     intakeMotor.move_voltage(12000);
-//     outtakeMotor.move_velocity(-50);
-//     chassis.moveToPoint(33,-25,1200,{.forwards=true,.maxSpeed=50},true);
-//     pros::delay(1200);
-//     chassis.moveToPoint(33,20,1200,{.forwards=false,.maxSpeed=90},true);
-//     scoreLongMatch();
+    Control::intakeState = Control::IntakeState::storage;
+    matchLoad.set_value(true);
+    //middleDescore.set_value(false);
+    chassis.moveToPoint(31,5,1200,{.forwards=true,.maxSpeed=90,.minSpeed=30,.earlyExitRange=3},false);
+    chassis.turnToPoint(32,-20,800,{.forwards=false,.maxSpeed=75},false);
+    //intakeMotor.move_voltage(12000);
+    //outtakeMotor.move_velocity(-50);
+    chassis.moveToPoint(32,-20,1200,{.forwards=false,.maxSpeed=50},true);
+    pros::delay(1200);
+    chassis.moveToPoint(34,25,1200,{.forwards=true,.maxSpeed=90},true);
+    scoreLongMatch(color::red,1000);
 
-//     chassis.setPose(0,0,chassis.getPose().theta);
-//     descore();
+    chassis.setPose(0,0,chassis.getPose().theta);
+    // descore();
 
-//     // matchLoad.set_value(false);
-//     // chassis.moveToPoint(0, -16, 1200, {.forwards = true,.minSpeed=30,.earlyExitRange=3},false);
-//     // chassis.moveToPose(8.2, 16, 180, 10000, {.forwards = false,.minSpeed=70},false);
-//     // rightWheels.move_velocity(0);
-//     // leftWheels.move_velocity(0);
+    // matchLoad.set_value(false);
+    // chassis.moveToPoint(0, -16, 1200, {.forwards = true,.minSpeed=30,.earlyExitRange=3},false);
+    // chassis.moveToPose(8.2, 16, 180, 10000, {.forwards = false,.minSpeed=70},false);
+    // rightWheels.move_velocity(0);
+    // leftWheels.move_velocity(0);
 
-// }
+}
 
 // void Autonomous::matchRight1Goal(){
 //     chassis.setPose(0,0,0);
@@ -181,93 +180,66 @@
 // }
 
 
-// void Autonomous::matchSolo(){
-//     currentAngle=0;
-//     chassis.setPose(2.5,0,-90);
-//     originalTime = pros::millis();
-//     matchLoad.set_value(false);
+void Autonomous::matchSolo(){
+    chassis.setPose(0,0,90);
+    Control::intakeState = Control::IntakeState::storage;
+    double originalTime = pros::millis();
+    matchLoad.set_value(false);
 
-//     intakeMotor.move_voltage(12000);
-//     outtakeMotor.move_velocity(-50);
+    //intakeMotor.move_voltage(12000);
+    //outtakeMotor.move_velocity(-50);
 
-//     chassis.moveToPoint(-7,0,500,{.forwards=true},false);
-//     chassis.moveToPoint(48,0,1500,{.forwards=false},false);
-//     matchLoad.set_value(true);
-//     chassis.turnToPoint(48,-25,1200,{.forwards=true,.maxSpeed=80},false);
+    chassis.moveToPoint(-7,0,500,{.forwards=false},false);
+    chassis.moveToPoint(44.5,0,1500,{.forwards=true},false);
+    matchLoad.set_value(true);
+    chassis.turnToPoint(44.5,-25,1200,{.forwards=false,.maxSpeed=80},false);
     
 
-//     //matchloading
-//     //pros::delay(200);
-//     chassis.moveToPoint(48,-25,900,{.forwards=true,.maxSpeed=50},false);
-//     //pros::delay(2000);
+    //matchloading
+    chassis.moveToPoint(44.5,-25,900,{.forwards=false,.maxSpeed=50},false);
 
-//     chassis.moveToPoint(51,22,1200,{.forwards=false,.maxSpeed=130},true);
-
-//     //scoring long goal
-//     //outtakeMotor.move_voltage(12000);
-//     //chassis.moveToPoint(51,27,500,{.forwards=false,.maxSpeed=100},true);
-//     //pros::delay(1500);
     
-//     scoreLongMatch(color::none,1500);
-//     chassis.setPose(0,0,chassis.getPose().theta);
-//     matchLoad.set_value(false);
+    chassis.moveToPoint(46,25,1200,{.forwards=true,.maxSpeed=130},true);
+    scoreLongMatch(color::red,1200);
+
+;
+    chassis.setPose(0,0,chassis.getPose().theta);
+
+    matchLoad.set_value(false);
+    chassis.moveToPoint(-16,6,1000,{.forwards=false,.maxSpeed=60,.minSpeed=30,.earlyExitRange=8},false);
+
+
+    chassis.moveToPoint(-72,6,1500,{.forwards=false,.maxSpeed=100,.minSpeed=30,.earlyExitRange=30},false);
+    chassis.moveToPoint(-72,6,1500,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=17},false);
     
-
-//     //middle
-//     intakeMotor.move_velocity(0);
-//     outtakeMotor.move_velocity(-50);
-//     //chassis.moveToPoint(0,-11,1200,{.forwards=true,.maxSpeed=100},false);
-//     chassis.moveToPoint(-16,4,1000,{.forwards=true,.maxSpeed=80,.minSpeed=30,.earlyExitRange=8},false);
-//     intakeMotor.move_voltage(12000);
-//     outtakeMotor.move_velocity(-50);
-//     //chassis.moveToPoint(-16,2,1000,{.forwards=true,.maxSpeed=100},false);
+    chassis.moveToPoint(-72,6,1500,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=8},false);
+    chassis.moveToPoint(-95,-10,1500,{.forwards=false,.maxSpeed=100},false);
+    matchLoad.set_value(true);
+    chassis.turnToPoint(-97,20,800,{.forwards=true,.maxSpeed=80},false);
+    chassis.moveToPoint(-97,20,1000,{.forwards=true,.maxSpeed=100,.minSpeed=80},true);
+    scoreLongMatch(color::red,1000);
     
-//     //chassis.turnToPoint(-68,1,800,{.forwards=true,.maxSpeed=80},false);
+    chassis.setPose(0,0,chassis.getPose().theta);
+
+    Control::intakeState = Control::IntakeState::storage;
+    chassis.moveToPoint(1,-45,1000,{.forwards=false,.maxSpeed=60,.minSpeed=30,.earlyExitRange=25},false);
+    chassis.moveToPoint(1,-45,700,{.forwards=false,.maxSpeed=50},false);
+
+
+    chassis.setPose(chassis.getPose().x,0,chassis.getPose().theta);
+    chassis.moveToPoint(0,15,500,{.forwards=true,.maxSpeed=100,.minSpeed=30,.earlyExitRange=14},false);
+    //chassis.moveToPoint(35,45,1200,{.forwards=true,.maxSpeed=100},false);
+    chassis.moveToPoint(43,54,1800,{.forwards=true,.maxSpeed=100},true);
     
-//     chassis.moveToPoint(-68,0,1500,{.forwards=true,.maxSpeed=120,.minSpeed=30,.earlyExitRange=17},false);
-//     chassis.moveToPoint(-68,0,1500,{.forwards=true,.maxSpeed=80,.minSpeed=30,.earlyExitRange=12.5},false);
-//     matchLoad.set_value(true);
-//     chassis.moveToPoint(-68,0,500,{.forwards=true,.maxSpeed=80},false);
-    
+    scoreHighMatch(color::red,12000);
 
-
-//     //score high goal
-//     chassis.turnToPoint(-48.5,16,1000,{.forwards=false,.maxSpeed=80},false);
-    
-//     chassis.moveToPoint(-48.5,16,1000,{.forwards=false,.maxSpeed=80, .minSpeed = 50},true);
-//     intakeMotor.move_velocity(0);
-//     outtakeMotor.move_velocity(0);
-//     pros::delay(300);
-//     intakeMotor.move_velocity(-300);
-//     outtakeMotor.move_velocity(-600);
-//     pros::delay(250);
-//     intakeMotor.move_velocity(0);
-//     outtakeMotor.move_velocity(0);
-//     pros::delay(150);
-//     intakeMotor.move_velocity(450);
-//     outtakeMotor.move_velocity(0);
-//     pros::delay(1100);
-
-//     //go to long goal
-//     intakeMotor.move_velocity(0);
-//     outtakeMotor.move_velocity(-50);
-//     //chassis.turnToPoint(-92,-15,1000,{.forwards=true},false);
-//     chassis.moveToPoint(-86,-17,1200,{.forwards=true,.maxSpeed=100},false);
-
-//     chassis.turnToPoint(-88,-45,800,{.forwards=true,.maxSpeed=80},false);
-//     chassis.setPose(distLeft.get()*0.0393701*cos(chassis.getPose().theta/180*3.1415926-3.1415926),chassis.getPose().y,chassis.getPose().theta);
-//     intakeMotor.move_voltage(12000);
-//     chassis.moveToPoint(18,-45,1000,{.forwards=true,.maxSpeed=70,.minSpeed=30,.earlyExitRange=20},false);
-//     chassis.moveToPoint(18,-45,940,{.forwards=true,.maxSpeed=60,.minSpeed=30,.earlyExitRange=15},false);
-//     chassis.moveToPoint(18,-45,600,{.forwards=true,.maxSpeed=40},false);
-
-//     chassis.moveToPoint(17.5,20,1200,{.forwards=false,.maxSpeed=100},true);
-
-//     scoreLongMatch(color::none,15000);
+    // chassis.setPose(0,0,chassis.getPose().theta);
+    // chassis.moveToPoint(-28,-28,1200,{.forwards=false,.maxSpeed=100},false);
+    // chassis.turnToPoint(-30,-10,800,{.forwards=true,.maxSpeed=80},false);
+    // chassis.moveToPoint(-30,-10,1200,{.forwards=true,.maxSpeed=100},false);
     
 
-//     descore();
-// }
+}
 
 
 

@@ -18,6 +18,9 @@ class Autonomous{
     static int intaking;
     static double jamFlag;
 
+    static void scoreLongMatch(color c,int scoringTime);
+    static void scoreHighMatch(color c,int scoringTime);
+
     static void matchLeft2Goal();
     static void matchLeft1Goal();
     static void matchRight2Goal();

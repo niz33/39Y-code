@@ -25,20 +25,33 @@ pros::Optical cSensor(1);
 pros::Optical cSensor2(1);
 pros::Distance dSensor(6);
 
-pros::ADIDigitalOut matchLoad('A', false);
-pros::ADIDigitalOut wing('C', false);
+pros::ADIDigitalOut matchLoad('G', false);
+// pros::ADIDigitalIn matchLoadIn('G');
+pros::ADIDigitalOut wingL('C', false);
+// pros::ADIDigitalIn wingLIn('C');
 pros::ADIDigitalOut middleDescore('D', false);
+// pros::ADIDigitalIn middleDescoreIn('D');
+pros::ADIDigitalOut wingR('D', false);
+// pros::ADIDigitalIn wingRIn('D');
+pros::ADIDigitalOut intakeLift('E', false);
+// pros::ADIDigitalIn intakeLiftIn('E');
+pros::ADIDigitalOut feet('B', false);
+// pros::ADIDigitalIn feetIn('B');
+pros::ADIDigitalOut hood('H', false);
+// pros::ADIDigitalIn hoodIn('H');
+pros::ADIDigitalOut roof('H', false);
+// pros::ADIDigitalIn roofIn('H');
 
  
 //inertial Sensor
-pros::Imu inertial(16);
+pros::Imu inertial(10);
 pros::Distance distLeft(9);
 pros::Distance distRight(2);
-pros::Distance distFront(2);
+pros::Distance distFront(7);
 pros::Distance distBack(6);
 
 //odometry
-pros::Rotation horizontalRotation(2);
+pros::Rotation horizontalRotation(-4);
 pros::Rotation verticalRotation(-14);
 
 //lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalRotation, lemlib::Omniwheel::NEW_275, 2.65);
@@ -46,7 +59,7 @@ pros::Rotation verticalRotation(-14);
 //lemlib::TrackingWheel vertical_tracking_wheel(&verticalRotation, lemlib::Omniwheel::NEW_275, 0.625);
 
 
-lemlib::TrackingWheel horizontal_tracking_wheel(&verticalRotation, lemlib::Omniwheel::NEW_2,+2.5);
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalRotation, lemlib::Omniwheel::NEW_2,+3);
 
 
 lemlib::ExpoDriveCurve throttle_curve(3, // joystick deadband out of 127
@@ -77,24 +90,24 @@ lemlib::OdomSensors sensors(nullptr, //&vertical_tracking_wheel
 );
 
 lemlib::ControllerSettings lateral_controller(
-  9, //kP
+  6, //kP
   0.0, //kI
-  10, //kD
+  12, //kD
   3.0, // anti windup
-  0.5, // small error range in inches
+  1, // small error range in inches
   30, // small error range timeout, in miliseconds
-  1.5, // large error range in inches
-  80, // large error range timeout, in miliseconds
+  3, // large error range in inches
+  120, // large error range timeout, in miliseconds
   7 // max acceleration (slew)
 );
 lemlib::ControllerSettings angular_controller(
-  3.2, // proportional gain (kP)
-  0.00, // integral gain (kI)
-  18, // derivative gain (kD)
+  3.3, // proportional gain (kP)
+  0, // integral gain (kI)
+  22, // derivative gain (kD)
   3, // anti windup
-  1.5, // small error range, in degrees
+  2, // small error range, in degrees
   30, // small error range timeout, in milliseconds
-  4, // large error range, in degrees
+  5, // large error range, in degrees
   60, // large error range timeout, in milliseconds
   0 // maximum acceleration (slew)
 );
@@ -109,4 +122,4 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
 );
 
 pros::Task printTask(Autonomous::print);
-pros::Task intakeTask(Control::intake);
+pros::Task intakeTask(Control::intakeLoop);

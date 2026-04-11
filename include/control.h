@@ -8,11 +8,14 @@ class Control{
 
         static void intake();
 
+        static void intakeLoop();
+
         static void motorUpdate();
 
         enum IntakeState{
             longGoal,
             highGoal,
+            highGoalSlow,
             lowGoal,
             lowGoalCooling,
             storage,
@@ -34,6 +37,8 @@ class Control{
         static ScoringColor scoringColor;
         static ColorSortingType colorSortingType;
 
+
+
         static int cDelay;
         static std::queue<int> cRight;
         static int countdown;
@@ -53,15 +58,24 @@ class Control{
         static double outtakeTargetVelocity;
         static double outtakeIntegral;
 
+        static double midMotorTargetVelocity;
+        static double midMotorIntegral;
 
-    public:
-        static bool load;
-        static bool descoring;
-        static bool middleDescoring;
+
 
         static bool lastR2;
         static bool lastA;
         static bool lastB;
+        static bool lastDown;
+        static bool lastY;
+
+
+        static bool wingRState;
+        static bool feetState;
+        static bool hoodState;
+        static bool matchLoadState;
+
+
 
         
         static void update();

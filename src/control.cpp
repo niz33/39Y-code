@@ -1,12 +1,16 @@
 #include "main.h"
 
 
-bool Control::descoring = false;
-bool Control::load = false;
-bool Control::middleDescoring = false;
+
 bool Control::lastR2 = false;
 bool Control::lastA = false;
 bool Control::lastB = false;
+bool Control::lastDown = false;
+bool Control::lastY = false;
+bool Control::wingRState = false;
+bool Control::feetState = false;
+bool Control::hoodState = false;  
+bool Control::matchLoadState = false;
 int Control::cDelay = 3;
 int Control::countdown = 0;
 int Control::cooldown = 0;
@@ -24,6 +28,8 @@ int Control::highGoalTime=0;
 int Control::lowGoalCooldown=0;
 double Control::outtakeTargetVelocity=0;
 double Control::outtakeIntegral=0;
+double Control::midMotorTargetVelocity=0;
+double Control::midMotorIntegral=0;
 
 
 std::queue<int> Control::cRight;
@@ -52,25 +58,7 @@ void Control::drive(){
 
 
     }
-     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
-
-        
-        if(cooldown>20){
-            intakeMotor.move_velocity(600);
-            outtakeMotor.move_velocity(-100);
-        }
-        else{
-            //intakeMotor.move_voltage(-12000);
-            intakeMotor.move_velocity(-100);
-            outtakeMotor.move_voltage(-12000);
-        }
-
-
-        intakeMotor.move_velocity(300);
-        outtakeMotor.move_velocity(-50);
-
-
-    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+     else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
         intakeState=storage;
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
         intakeState=lowGoal;
@@ -94,43 +82,37 @@ void Control::drive(){
         cRight.pop();
     }
 
-    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
-        // if(Control::middleDescoreDuration>0&&Control::middleDescoreDuration<15){
-        //     Control::middleDescoring=!Control::middleDescoring;
-        //     middleDescore.set_value(Control::middleDescoring);
-        // }
-        // Control::middleDescoreDuration=0;
-        if(Control::lastA==false){
-            Control::middleDescoring=!Control::middleDescoring;
-            middleDescore.set_value(Control::middleDescoring);
-        }
-        Control::lastA=true;
-    }
-    else{
-        Control::lastA=false;
-    }
+
+
+
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
-        if(Control::lastB==false){
-            Control::load=1-Control::load;
-            matchLoad.set_value(load);
-        }
-        Control::lastB=true;
-			
+        matchLoadState=!matchLoadState;
+        matchLoad.set_value(matchLoadState);
+        
 	}
-    else{
-        Control::lastB=false;
-    }
+
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)){
-        if(Control::lastR2==false){
-            Control::descoring=1-Control::descoring;
-            wing.set_value(Control::descoring);
-        }
-        Control::lastR2=true;
+        wingRState=!wingRState;
+        wingR.set_value(wingRState);
 	}
-    else{
-        Control::lastR2=false;
+
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+        feetState=!feetState;
+        //feet.set_value(feetState);
     }
 
+    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+        hoodState=!hoodState;
+        hood.set_value(hoodState);
+    }
+}
+
+void Control::intakeLoop(){
+    while(true){
+        Control::intake();
+        Control::motorUpdate();
+        pros::delay(10);
+    }
 }
 
 
@@ -166,8 +148,11 @@ void Control::intake(){
         midMotor.move_voltage(12000);
         sortMotor.move_voltage(12000);
         outtakeMotor.move_voltage(12000);
+        hood.set_value(true);
+    }else{
+        hood.set_value(false);
     }
-    if(intakeState==highGoal){
+    if(intakeState==highGoal||intakeState==highGoalSlow){
         highGoalTime++;
         sortMotor.move_voltage(-12000);
         if(highGoalTime<20&&dSensor.get()<70){
@@ -180,8 +165,14 @@ void Control::intake(){
         else{
             intakeMotor.move_voltage(12000);
             midMotor.move_voltage(12000);
-            outtakeMotor.move_velocity(100);
+            outtakeMotor.move_velocity(1000);
             outtakeTargetVelocity=1000;
+            if(intakeState==highGoalSlow){
+                intakeMotor.move_voltage(6000);
+                midMotor.move_voltage(6000);
+                outtakeMotor.move_velocity(1000);
+                sortMotor.move_velocity(-20);
+            }
         }
         
         
@@ -215,12 +206,12 @@ void Control::intake(){
         }
 
         intakeMotor.move_voltage(12000);
-        //midMotor.move_voltage(12000);
+        midMotor.move_voltage(4500);
         // sortMotor.move_voltage(12000);
         // outtakeMotor.move_voltage(12000);
         
         // intakeMotor.move_voltage(12000);
-        midMotor.move_voltage(4500);
+        midMotorTargetVelocity=1000;
         outtakeMotor.move_voltage(0);
         sortMotor.move_voltage(400);
         outtakeTargetVelocity=1000;
@@ -228,7 +219,7 @@ void Control::intake(){
 
         if(cSensor.get_hue()>80||cSensor.get_hue()<20){
             if(dSensor.get()>70){
-                outtakeTargetVelocity=70;
+                outtakeTargetVelocity=80;
                 //midMotor.move_voltage(3500);
                 //sortMotor.move_voltage(800);
             }
@@ -246,7 +237,8 @@ void Control::intake(){
         // }
 
         if(dSensor.get()<70){
-            midMotor.move_voltage(2000);
+            midMotorTargetVelocity=1000;
+            midMotor.move_voltage(3000);
             sortMotor.move_voltage(1000);
             outtakeMotor.move_voltage(1000);
             //outtakeMotor.move_voltage(800);
@@ -269,6 +261,7 @@ void Control::intake(){
     }else{
         storageTime=0;
         outtakeTargetVelocity=1000;
+        midMotorTargetVelocity=1000;
     }
 
     if(intakeState==non){
@@ -289,5 +282,14 @@ void Control::motorUpdate(){
         outtakeIntegral+=error;
         double output=kP*error+kI*outtakeIntegral;
         outtakeMotor.move_voltage(output);
+    }
+
+    if(midMotorTargetVelocity!=1000){
+        double v=midMotor.get_actual_velocity();
+        double error=midMotorTargetVelocity-v;
+        double kP=50, kI=1;
+        midMotorIntegral+=error;
+        double output=kP*error+kI*midMotorIntegral;
+        midMotor.move_voltage(output);
     }
 }

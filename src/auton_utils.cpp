@@ -25,18 +25,20 @@ void Autonomous::print(){
 //     }
 // }
 
-// void Autonomous::test(){
-//     leftWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
-// 	rightWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
-//     chassis.setPose(0,0,0);
-//     chassis.turnToPoint(-30,0,5000,{.forwards=false,.maxSpeed=75},false);
-//     chassis.moveToPoint(-30,0,5000,{.forwards=false,.maxSpeed=90},false);
-//     chassis.turnToPoint(0,0,5000,{.forwards=false,.maxSpeed=75},false);
-//     chassis.moveToPoint(0,0,5000,{.forwards=false,.maxSpeed=90},false);
-//     chassis.turnToHeading(0,5000,{.maxSpeed=75},false);
-//     // chassis.moveToPose(0,48,0,5000,{},false);
-//     // chassis.moveToPose(0,0,0,5000,{.forwards=false},false);
-// }
+void Autonomous::test(){
+    //leftWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
+	//rightWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
+    chassis.setPose(0,0,0);
+    //chassis.moveToPoint(0,50,5000,{.forwards=true,.maxSpeed=90},false);
+    chassis.turnToPoint(30,0,5000,{.forwards=true,.maxSpeed=75},false);
+    chassis.moveToPoint(30,0,5000,{.forwards=true,.maxSpeed=90},false);
+    chassis.turnToPoint(0,0,5000,{.forwards=true,.maxSpeed=75},false);
+    chassis.moveToPoint(0,0,5000,{.forwards=true,.maxSpeed=90},false);
+    chassis.turnToHeading(0,5000,{.maxSpeed=75},false);
+    //chassis.turnToHeading(200,5000,{.maxSpeed=75},false);
+    //chassis.moveToPose(0,48,0,5000,{},false);
+    // chassis.moveToPose(0,0,0,5000,{.forwards=false},false);
+}
 
 // void Autonomous::distTest(){
 //     chassis.setPose(0,0,0, false);
@@ -75,63 +77,42 @@ void Autonomous::print(){
 //     outtakeMotor.move_velocity(0);
 // }
 
-// void scoreLongMatch(color c=color::none,int scoringTime=1900){
-//     for(int i=1;i<=140;i++){
-//         if(distStand.get()<130){
-//             break;
-//         }
-//         pros::delay(10);
-//     }
+void Autonomous::scoreLongMatch(color c,int scoringTime){
+    for(int i=1;i<=140;i++){
+        if(distFront.get()<90){
+            break;
+        }
+        pros::delay(10);
+    }
 
-//     chassis.cancelMotion();
-//     leftWheels.move_voltage(-3000);
-//     rightWheels.move_voltage(-3000);
+    chassis.cancelMotion();
+    leftWheels.move_voltage(3000);
+    rightWheels.move_voltage(3000);
 
+    Control::intakeState = Control::IntakeState::longGoal;
+    pros::delay(scoringTime);
+    Control::intakeState = Control::IntakeState::storage;
 
-//     originalTime = pros::millis();
+}
 
-//     int cDelay=3;
-//     std::queue<int> cRight;
-//     int flag=0;
-//     while(true){
-//         int temp=1;
+ 
+void Autonomous::scoreHighMatch(color c,int scoringTime){
+    for(int i=1;i<=140;i++){
+        if(distFront.get()<180){
+            break;
+        }
+        pros::delay(10);
+    }
 
-//         if(c==color::red){
-//             if (cSensor.get_hue()>80) temp=0;
-//         }
-//         else if(c==color::blue){
-//             if (cSensor.get_hue()<20) temp=0;
-//         }
+    chassis.cancelMotion();
+    leftWheels.move_voltage(1500);
+    rightWheels.move_voltage(1500);
 
-//         cRight.push(temp);
-//         if(cRight.front()==0){
-//             flag=1;
-//         }
-//         if(cRight.size()>=cDelay){
-//             cRight.pop();
-//         }
-//         if(flag==1){
-//             intakeMotor.move_voltage(12000);
-//             outtakeMotor.move_velocity(-50);
-//             // intakeMotor.move_voltage(12000);
-//             // outtakeMotor.move_voltage(12000);
-//         }
-//         if(flag==0){
-//             intakeMotor.move_voltage(12000);
-//             outtakeMotor.move_voltage(12000);
-//         }
-//         //back out at the end
-//         if (pros::millis() >= scoringTime + originalTime){//11800
-//             // drivetrain.leftMotors->move_voltage(-12000);
-//             // drivetrain.rightMotors->move_voltage(-12000);
-//             break;
-//         }
-//         pros::delay(5);
-//     }
+    Control::intakeState = Control::IntakeState::highGoalSlow;
+    pros::delay(scoringTime);
+    Control::intakeState = Control::IntakeState::storage;
 
-
-// }
-
+}
 // void descore(){
 
 //     matchLoad.set_value(false);

@@ -41,7 +41,7 @@ void initialize() {
 	//intakeMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
     //outtakeMotor.set_brake_mode(MOTOR_BRAKE_HOLD);
 	matchLoad.set_value(false);
-	wing.set_value(false);
+	wingL.set_value(false);
 	cSensor.set_integration_time(10);
 	
 	//Autonomous::distTest();
@@ -95,12 +95,12 @@ void autonomous() {
 	//Autonomous::skillsMove();
 	//Autonomous::skillsAuton();
 	//Autonomous::matchSolo();
-	//Autonomous::test();
+	//  Autonomous::test();
 
 	//Autonomous::skillsAuton2();
 	//Autonomous::matchLeftAutonBlue();
 	//Autonomous::RightMidLong();
-	//Autonomous::matchRight2Goal();
+	Autonomous::matchRight2Goal();
 	//Autonomous::matchRight1Goal();
 	//Autonomous::matchLeft1Goal();
 	//Autonomous::matchLeft2Goal();
