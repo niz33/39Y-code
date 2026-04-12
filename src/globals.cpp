@@ -123,3 +123,4 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
 
 pros::Task printTask(Autonomous::print);
 pros::Task intakeTask(Control::intakeLoop);
+pros::Task matchMacroTask(Autonomous::matchMacroExit);

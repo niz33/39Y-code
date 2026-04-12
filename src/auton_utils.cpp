@@ -113,18 +113,38 @@ void Autonomous::scoreHighMatch(color c,int scoringTime){
     Control::intakeState = Control::IntakeState::storage;
 
 }
-// void descore(){
+void Autonomous::matchDescore(){
 
-//     matchLoad.set_value(false);
-//     chassis.moveToPoint(0,-15,1200,{.forwards=true,.minSpeed=30,.earlyExitRange=3},false);
-//     chassis.moveToPose(7,15,180,2000,{.forwards=false, .minSpeed=60,.earlyExitRange=10},false);
-//     chassis.moveToPose(9,17,180,2000,{.forwards=false, .minSpeed=90},false);
-//     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+    chassis.setPose(0,0,0);
+    matchLoad.set_value(false);
+    chassis.moveToPose(-12,1,40,1200,{.forwards=false,.minSpeed=120,.earlyExitRange=12},false);
+    chassis.moveToPoint(-12,1,1200,{.forwards=false,.minSpeed=30,.earlyExitRange=7},false);
+    chassis.turnToPoint(-10,10,500,{.forwards=true, .minSpeed=60,.earlyExitRange=10},false);
+    chassis.moveToPoint(-10,10,2000,{.forwards=true, .minSpeed=120,.earlyExitRange=2},false);
+    //chassis.moveToPoint(-10.5,2,2000,{.forwards=true, .minSpeed=90},false);
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
 
  
+}
+
+void Autonomous::matchMacroExit(){
 
     
-// }
+    while(true){
+        int leftY = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+        int leftX = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+        if (leftX > 20 || leftX < -20 || leftY > 20 || leftY < -20) {
+            chassis.cancelAllMotions();
+        } 
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)){
+            Control::wingRState=!Control::wingRState;
+            wingR.set_value(Control::wingRState);
+	    }
+        pros::delay(10);
+    }
+    
+ 
+}
 
 // void scoreSeven(){
 //     intakeMotor.move_velocity(300);

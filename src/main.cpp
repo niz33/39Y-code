@@ -92,7 +92,7 @@ void autonomous() {
     //         // delay to save resources
     //         pros::delay(10);
     //     }
-	//Autonomous::skillsMove();
+	//Autonomous::descore();
 	//Autonomous::skillsAuton();
 	//Autonomous::matchSolo();
 	//  Autonomous::test();

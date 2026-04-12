@@ -68,3 +68,4 @@ extern lemlib::Chassis chassis;
 
 extern pros::Task printTask;
 extern pros::Task intakeTask;
+extern pros::Task matchMacroTask;

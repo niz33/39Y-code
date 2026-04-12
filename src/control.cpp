@@ -62,10 +62,9 @@ void Control::drive(){
         intakeState=storage;
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
         intakeState=lowGoal;
-    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-        intakeMotor.move_velocity(300);
-        outtakeMotor.move_velocity(300);
-        Control::cooldown=0;
+    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)&&distFront.get()<100){
+        Autonomous::matchDescore();
+
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
         intakeMotor.move_velocity(-300);
         outtakeMotor.move_velocity(-600);

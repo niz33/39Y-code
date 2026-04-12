@@ -14,6 +14,9 @@ class Autonomous{
     static void test();
     static void distTest();
     static void intake();
+    
+    static void matchDescore();
+    static void matchMacroExit();
 
     static int intaking;
     static double jamFlag;
