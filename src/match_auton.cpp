@@ -111,18 +111,18 @@
 
 
 void Autonomous::matchRight2Goal(){
-    chassis.setPose(1,0,90);
+    chassis.setPose(15,0,90);
     
     matchLoad.set_value(false);
     Control::intakeState = Control::IntakeState::storage;
 
-    chassis.moveToPoint(44.5,0,1500,{.forwards=true},false);
+    chassis.moveToPoint(45.5,0,1500,{.forwards=true},false);
     matchLoad.set_value(true);
-    chassis.turnToPoint(44.5,-25,1200,{.forwards=false,.maxSpeed=80},false);
+    chassis.turnToPoint(45.5,-25,1200,{.forwards=false,.maxSpeed=80},false);
 
     //matchloading
-    chassis.moveToPoint(44.5,-25,900,{.forwards=false,.maxSpeed=50},false);
-    chassis.moveToPoint(46,25,1200,{.forwards=true,.maxSpeed=130},true);
+    chassis.moveToPoint(45.5,-25,900,{.forwards=false,.maxSpeed=50},false);
+    chassis.moveToPoint(46.5,25,1200,{.forwards=true,.maxSpeed=130},true);
     scoreLongMatch(color::red,1200);
     matchLoad.set_value(false);
     chassis.setPose(0,0,chassis.getPose().theta);
@@ -130,52 +130,139 @@ void Autonomous::matchRight2Goal(){
 
     chassis.moveToPoint(-16,6,1000,{.forwards=false,.maxSpeed=60,.minSpeed=30,.earlyExitRange=8},false);
     chassis.moveToPoint(-25,10,1500,{.forwards=false,.maxSpeed=100,.minSpeed=30,.earlyExitRange=8},false);
-    chassis.moveToPoint(-32,17,1500,{.forwards=false,.maxSpeed=100},false);
+    chassis.moveToPoint(-34,19,1500,{.forwards=false,.maxSpeed=100},false);
     Control::intakeState = Control::IntakeState::lowGoal;
     pros::delay(800);
 
-
-
-
-    // chassis.turnToPoint(10,21,700,{.forwards=false,.maxSpeed=75},false);
-    // chassis.moveToPoint(10,21,1200,{.forwards=false,.maxSpeed=90,.minSpeed=90,.earlyExitRange=15},false);
-    // //matchLoad.set_value(true);
-    // chassis.moveToPoint(10,21,1200,{.forwards=false,.maxSpeed=50},false);
-    // matchLoad.set_value(false);
-    // chassis.turnToPoint(2,33,800,{.forwards=false,.maxSpeed=75},false);
-    // //middleDescore.set_value(true);
-    // chassis.moveToPoint(1,34,800,{.forwards=false,.maxSpeed=60},false);
-    // Control::intakeState = Control::IntakeState::lowGoal;
-    // pros::delay(1000);
-
-
-    // Control::intakeState = Control::IntakeState::storage;
-    // matchLoad.set_value(true);
-    // //middleDescore.set_value(false);
-    // chassis.moveToPoint(31,5,1200,{.forwards=true,.maxSpeed=90,.minSpeed=30,.earlyExitRange=3},false);
-    // chassis.turnToPoint(32,-20,800,{.forwards=false,.maxSpeed=75},false);
-    // //intakeMotor.move_voltage(12000);
-    // //outtakeMotor.move_velocity(-50);
-    // chassis.moveToPoint(32,-20,1200,{.forwards=false,.maxSpeed=50},true);
-    // pros::delay(1200);
-    // chassis.moveToPoint(34,25,1200,{.forwards=true,.maxSpeed=90},true);
-    // scoreLongMatch(color::red,1000);
-
-    // chassis.setPose(0,0,chassis.getPose().theta);
-
-
-
-
-
-    // descore();
-
-    // matchLoad.set_value(false);
-    // chassis.moveToPoint(0, -16, 1200, {.forwards = true,.minSpeed=30,.earlyExitRange=3},false);
-    // chassis.moveToPose(8.2, 16, 180, 10000, {.forwards = false,.minSpeed=70},false);
-    // rightWheels.move_velocity(0);
-    // leftWheels.move_velocity(0);
+    chassis.setPose(0,0,chassis.getPose().theta);
+    chassis.moveToPoint(26,-28,1200,{.forwards=true,.maxSpeed=100},false);
+    chassis.turnToPoint(28,-10,800,{.forwards=false,.maxSpeed=80},false);
+    chassis.moveToPoint(28,-10,1200,{.forwards=false,.maxSpeed=100},false);
 
 }
+
+void Autonomous::matchRightCenter(){
+    chassis.setPose(15,0,90);
+    
+    matchLoad.set_value(false);
+    Control::intakeState = Control::IntakeState::storage;
+
+    chassis.moveToPoint(45.5,0,1500,{.forwards=true},false);
+    matchLoad.set_value(true);
+    chassis.turnToPoint(45.5,-25,1200,{.forwards=false,.maxSpeed=80},false);
+
+    //matchloading
+    chassis.moveToPoint(45.5,-25,900,{.forwards=false,.maxSpeed=50},false);
+    chassis.setPose(chassis.getPose().x,0,chassis.getPose().theta);
+    
+    chassis.moveToPoint(chassis.getPose().x,20,1000,{.forwards=true,.maxSpeed=100},false);
+    chassis.turnToPoint(15,45,1000,{.forwards=false,.maxSpeed=80},false);
+    chassis.moveToPoint(15,45,1500,{.forwards=false,.maxSpeed=100,.minSpeed=30,.earlyExitRange=8},false);
+    chassis.moveToPoint(10,50,1500,{.forwards=false,.maxSpeed=100},false);
+    Control::intakeState = Control::IntakeState::lowGoal;
+    pros::delay(800);
+    Control::intakeState = Control::IntakeState::storage;
+    chassis.moveToPoint(10,40,1000,{.forwards=true,.maxSpeed=100},false);
+    Control::intakeState = Control::IntakeState::storage;
+    chassis.turnToPoint(-22,40,800,{.forwards=false,.maxSpeed=80},false);
+    chassis.moveToPoint(-22,40,1500,{.forwards=false,.maxSpeed=100},false);
+    
+    chassis.turnToPoint(-9,56,800,{.forwards=true,.maxSpeed=80},false);
+    chassis.moveToPoint(-9,56,1500,{.forwards=true,.maxSpeed=100},false);
+    Control::intakeState = Control::IntakeState::highGoalSlow;
+}
+ 
+
+void Autonomous::matchLeft2Goal(){
+    chassis.setPose(-13,0,-90);
+    
+    matchLoad.set_value(false);
+    Control::intakeState = Control::IntakeState::storage;
+
+    chassis.moveToPoint(-44,0,1500,{.forwards=true},false);
+    matchLoad.set_value(true);
+    chassis.turnToPoint(-46.5,-25,1200,{.forwards=false,.maxSpeed=80},false);
+
+    //matchloading
+    chassis.moveToPoint(-46.5,-25,900,{.forwards=false,.maxSpeed=50},false);
+    chassis.moveToPoint(-48,25,1200,{.forwards=true,.maxSpeed=130},true);
+    scoreLongMatch(color::red,900);
+    matchLoad.set_value(false);
+    chassis.setPose(0,0,chassis.getPose().theta);
+    
+
+    chassis.moveToPoint(18,1,1000,{.forwards=false,.maxSpeed=90,.minSpeed=30,.earlyExitRange=8},false);
+    chassis.moveToPoint(28,2,1500,{.forwards=false,.maxSpeed=100,.minSpeed=30,.earlyExitRange=3},false);
+    //chassis.turnToHeading(80,200,{.maxSpeed=80},false);
+    chassis.turnToPoint(39,19,1500,{.forwards=true,.maxSpeed=80},false);
+    chassis.moveToPoint(39,19,800,{.forwards=true,.maxSpeed=100},false);
+    Control::intakeState = Control::IntakeState::highGoalSlow;
+    pros::delay(800);
+    chassis.setPose(0,0,chassis.getPose().theta);
+
+    chassis.moveToPoint(-26,-28,1200,{.forwards=false,.maxSpeed=100},false);
+    chassis.turnToPoint(-28,-10,800,{.forwards=true,.maxSpeed=80},false);
+    chassis.moveToPoint(-28,-10,1200,{.forwards=true,.maxSpeed=100},false);
+
+
+}
+
+void Autonomous::matchRight1Goal(){
+    chassis.setPose(0,0,196.5);
+    
+    matchLoad.set_value(false);
+    Control::intakeState = Control::IntakeState::storage;
+
+    chassis.moveToPoint(10,24,1500,{.forwards=false,.minSpeed=30,.earlyExitRange=6},false);
+    
+    chassis.moveToPoint(10,24,1500,{.forwards=false,.minSpeed=30,.earlyExitRange=3},false);
+    matchLoad.set_value(true);
+    chassis.turnToPoint(31,0,200,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=5},false);
+    chassis.moveToPoint(31,0,1500,{.forwards=false,.minSpeed=30,.earlyExitRange=7},false);
+    //matchloading
+    chassis.moveToPoint(32,-25,1050,{.forwards=false,.maxSpeed=60},false);
+    chassis.moveToPoint(32.5,25,1200,{.forwards=true,.maxSpeed=130},true);
+    scoreLongMatch(color::red,900);
+
+    chassis.setPose(0,0,chassis.getPose().theta);
+    matchLoad.set_value(false);
+    chassis.moveToPoint(-10.8,1,1200,{.forwards=false,.minSpeed=120,.earlyExitRange=2},false);
+    //chassis.moveToPose(-12,1,40,1200,{.forwards=false,.minSpeed=30,.earlyExitRange=7},false);
+    chassis.turnToHeading(20,500,{.minSpeed=60,.earlyExitRange=5},false);
+    chassis.moveToPoint(-9,20,2000,{.forwards=true, .minSpeed=120,.earlyExitRange=8},false);
+    //chassis.moveToPoint(-10.5,2,2000,{.forwards=true, .minSpeed=90},false);
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+
+}
+
+
+void Autonomous::matchLeft1Goal(){
+    chassis.setPose(0,0,166);
+    
+    matchLoad.set_value(false);
+    Control::intakeState = Control::IntakeState::storage;
+
+    chassis.moveToPoint(-9,25,1500,{.forwards=false,.minSpeed=30,.earlyExitRange=6},false);
+    chassis.moveToPoint(-9,25,1500,{.forwards=false,.minSpeed=30,.earlyExitRange=3},false);
+    matchLoad.set_value(true);
+    chassis.turnToPoint(-35,0,200,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=5},false);
+    chassis.moveToPoint(-35,0,1500,{.forwards=false,.minSpeed=30,.earlyExitRange=5},false);
+    //matchloading
+    chassis.moveToPoint(-36,-25,1050,{.forwards=false,.maxSpeed=60},false);
+    chassis.moveToPoint(-37.4,25,1200,{.forwards=true,.maxSpeed=130},true);
+    scoreLongMatch(color::red,900);
+
+    chassis.setPose(0,0,chassis.getPose().theta);
+    matchLoad.set_value(false);
+    chassis.moveToPoint(-10.8,1,1200,{.forwards=false,.minSpeed=120,.earlyExitRange=2},false);
+    //chassis.moveToPose(-12,1,40,1200,{.forwards=false,.minSpeed=30,.earlyExitRange=7},false);
+    chassis.turnToHeading(20,500,{.minSpeed=60,.earlyExitRange=5},false);
+    chassis.moveToPoint(-9,20,2000,{.forwards=true, .minSpeed=120,.earlyExitRange=8},false);
+    //chassis.moveToPoint(-10.5,2,2000,{.forwards=true, .minSpeed=90},false);
+    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+
+}
+
 
 // void Autonomous::matchRight1Goal(){
 //     chassis.setPose(0,0,0);
@@ -221,11 +308,11 @@ void Autonomous::matchSolo(){
     
 
     //matchloading
-    chassis.moveToPoint(44.5,-25,900,{.forwards=false,.maxSpeed=50},false);
+    chassis.moveToPoint(44.5,-25,800,{.forwards=false,.maxSpeed=50},false);
 
     
     chassis.moveToPoint(46,25,1200,{.forwards=true,.maxSpeed=130},true);
-    scoreLongMatch(color::red,1200);
+    scoreLongMatch(color::red,1100);
 
 
     chassis.setPose(0,0,chassis.getPose().theta);
@@ -238,10 +325,10 @@ void Autonomous::matchSolo(){
     chassis.moveToPoint(-72,6,1500,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=17},false);
     
     chassis.moveToPoint(-72,6,1500,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=8},false);
-    chassis.moveToPoint(-95,-10,1500,{.forwards=false,.maxSpeed=100},false);
+    chassis.moveToPoint(-96.5,-10,1500,{.forwards=false,.maxSpeed=100},false);
     matchLoad.set_value(true);
-    chassis.turnToPoint(-97,20,800,{.forwards=true,.maxSpeed=80},false);
-    chassis.moveToPoint(-97,20,1000,{.forwards=true,.maxSpeed=100,.minSpeed=80},true);
+    chassis.turnToPoint(-97.5,20,800,{.forwards=true,.maxSpeed=80},false);
+    chassis.moveToPoint(-97.5,20,1000,{.forwards=true,.maxSpeed=100,.minSpeed=80},true);
     scoreLongMatch(color::red,1000);
     
     chassis.setPose(0,0,chassis.getPose().theta);

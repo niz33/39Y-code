@@ -167,8 +167,8 @@ void Control::intake(){
             outtakeMotor.move_velocity(1000);
             outtakeTargetVelocity=1000;
             if(intakeState==highGoalSlow){
-                intakeMotor.move_voltage(6000);
-                midMotor.move_voltage(6000);
+                intakeMotor.move_voltage(12000);
+                midMotor.move_voltage(12000);
                 outtakeMotor.move_velocity(1000);
                 sortMotor.move_velocity(-20);
             }

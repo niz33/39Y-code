@@ -117,10 +117,10 @@ void Autonomous::matchDescore(){
 
     chassis.setPose(0,0,0);
     matchLoad.set_value(false);
-    chassis.moveToPose(-12,1,40,1200,{.forwards=false,.minSpeed=120,.earlyExitRange=12},false);
-    chassis.moveToPoint(-12,1,1200,{.forwards=false,.minSpeed=30,.earlyExitRange=7},false);
-    chassis.turnToPoint(-10,10,500,{.forwards=true, .minSpeed=60,.earlyExitRange=10},false);
-    chassis.moveToPoint(-10,10,2000,{.forwards=true, .minSpeed=120,.earlyExitRange=2},false);
+    chassis.moveToPoint(-11,1,1200,{.forwards=false,.minSpeed=120,.earlyExitRange=2},false);
+    //chassis.moveToPose(-12,1,40,1200,{.forwards=false,.minSpeed=30,.earlyExitRange=7},false);
+    chassis.turnToHeading(20,900,{.minSpeed=60,.earlyExitRange=5},false);
+    chassis.moveToPoint(-10,10,2000,{.forwards=true, .minSpeed=120,.earlyExitRange=5},false);
     //chassis.moveToPoint(-10.5,2,2000,{.forwards=true, .minSpeed=90},false);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
 

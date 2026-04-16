@@ -100,8 +100,8 @@ void autonomous() {
 	//Autonomous::skillsAuton2();
 	//Autonomous::matchLeftAutonBlue();
 	//Autonomous::RightMidLong();
-	Autonomous::matchRight2Goal();
-	//Autonomous::matchRight1Goal();
+	Autonomous::matchRightCenter();
+	//Autonomous::matchRight2Goal();
 	//Autonomous::matchLeft1Goal();
 	//Autonomous::matchLeft2Goal();
 	//Autonomous::distTest();
