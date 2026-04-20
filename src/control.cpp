@@ -1,3 +1,5 @@
+#include "control.h"
+#include "globals.h"
 #include "main.h"
 
 
@@ -8,14 +10,17 @@ bool Control::lastB = false;
 bool Control::lastDown = false;
 bool Control::lastY = false;
 bool Control::wingRState = false;
+bool Control::wingLState = false;
 bool Control::feetState = false;
 bool Control::hoodState = false;  
 bool Control::matchLoadState = false;
+bool Control::middleGoalDescoreState = false;
 int Control::cDelay = 3;
 int Control::countdown = 0;
 int Control::cooldown = 0;
 int Control::middleDescoreDuration = 0;
 Control::IntakeState Control::intakeState = Control::non;
+Control::IntakeState Control::previousState = Control::non;
 Control::ScoringColor Control::scoringColor = Control::red;
 Control::ColorSortingType Control::colorSortingType = Control::none;
 double Control::IntakeTorque = 0;
@@ -26,11 +31,19 @@ double Control::SortVelocity = 0;
 int Control::storageTime=0;
 int Control::highGoalTime=0;
 int Control::lowGoalCooldown=0;
+
 double Control::outtakeTargetVelocity=0;
 double Control::outtakeIntegral=0;
 double Control::midMotorTargetVelocity=0;
 double Control::midMotorIntegral=0;
 
+int Control::blockcount = 0;
+
+float Control:: targetAngle = sortMotor.get_position();
+
+float Control:: targetOuttakeAngle = outtakeMotor.get_position();
+
+bool prevDetected = false;
 
 std::queue<int> Control::cRight;
 void Control::drive(){
@@ -63,6 +76,7 @@ void Control::drive(){
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
         intakeState=lowGoal;
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)&&distFront.get()<100){
+        //Autonomous::matchDescoreReverse();
         Autonomous::matchDescore();
 
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
@@ -95,6 +109,9 @@ void Control::drive(){
         wingR.set_value(wingRState);
 	}
 
+    
+   
+
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
         feetState=!feetState;
         //feet.set_value(feetState);
@@ -104,12 +121,18 @@ void Control::drive(){
         hoodState=!hoodState;
         hood.set_value(hoodState);
     }
+
+     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){
+        middleGoalDescoreState =!middleGoalDescoreState;
+        middleDescore.set_value(middleGoalDescoreState);
+    }
 }
 
 void Control::intakeLoop(){
     while(true){
         Control::intake();
-        Control::motorUpdate();
+        //Control::motorUpdate();
+        Control::anglePID();
         pros::delay(10);
     }
 }
@@ -129,10 +152,11 @@ void Control::initialize(){
 void Control::update(){
     Control::drive();
     Control::intake();
-    Control::motorUpdate();
+    Control::anglePID();
+    //Control::motorUpdate();
 }
 
-void Control::intake(){
+void Control::intake(){/*
 
     if(lowGoalCooldown>0&&intakeState!=lowGoal){
         lowGoalCooldown--;
@@ -270,9 +294,192 @@ void Control::intake(){
         outtakeMotor.move_voltage(0);
     }
 
+    int distance = intakeSensor.get_distance();
+
+    bool detected = (distance < 30);
+
+    if (detected && !prevDetected){
+        blockcount++;
+    }
+
+    prevDetected = detected;
+
+    
+    */
+
+    if(intakeState==longGoal){
+        intakeMotor.move_voltage(12000);
+        midMotor.move_voltage(12000);
+        sortMotor.move_voltage(12000);
+        outtakeMotor.move_voltage(12000);
+        hood.set_value(true);
+        previousState = longGoal;
+    }else{
+        hood.set_value(false);
+    }
+    if(intakeState==lowGoal){
+        intakeMotor.move_voltage(-12000);
+        midMotor.move_voltage(-12000);
+        sortMotor.move_voltage(-12000);
+        outtakeMotor.move_voltage(-12000);
+        previousState = lowGoal;
+    }
+    if(intakeState==storage){
+        if(previousState != storage){
+            blockcount = 0;
+            intakeMotor.move_voltage(12000);
+            sortMotor.move_voltage(-12000);
+            outtakeMotor.move_voltage(-12000);
+            pros::delay(200);
+            intakeMotor.move_voltage(0);
+            sortMotor.move_voltage(0);
+            outtakeMotor.move_voltage(0);
+
+            
+        }
+        
+        int distance = intakeSensor.get_distance();
+        float stepAngle = 105;
+        float stepAngleOuttake = 60;
+
+        bool detected = (distance < 30);
+
+        if(dSensor.get_distance() < 50){
+            blockcount = 4;
+        }
+        if(intakeSensor.get_distance() < 30 && dSensor.get_distance() < 50){
+            blockcount = 5;
+        }
+
+
+        if (detected && !prevDetected){
+        blockcount++;
+            if(blockcount < 5){
+            targetAngle = sortMotor.get_position() + stepAngle;
+            targetOuttakeAngle = outtakeMotor.get_position() + stepAngleOuttake;
+            }
+        }
+
+        prevDetected = detected;
+
+
+
+    intakeMotor.move_voltage (12000);
+
+
+    previousState = storage;
+
+    }
+
+    if(intakeState == highGoal){
+        if (previousState != highGoal) {
+    
+        
+        outtakeMotor.move_voltage(12000);
+        pros::delay(50);
+        intakeMotor.move_voltage(-12000);
+        sortMotor.move_voltage(-12000);
+        outtakeMotor.move_voltage(-12000);
+        pros::delay(150);
+        intakeMotor.move_voltage(0);
+        sortMotor.move_voltage(0);
+        outtakeMotor.move_voltage(0);
+        }
+        intakeMotor.move_voltage(12000);
+        sortMotor.move_voltage(12000);
+        outtakeMotor.move_voltage(-12000);
+        previousState = highGoal;
+
+
+    
+    }
+    else if(intakeState == highGoalSlow){
+        if (previousState != highGoalSlow){
+        outtakeMotor.move_voltage(12000);
+        pros::delay(50);
+        intakeMotor.move_voltage(-12000);
+        sortMotor.move_voltage(-12000);
+        outtakeMotor.move_voltage(-12000);
+        pros::delay(150);
+        intakeMotor.move_voltage(0);
+        sortMotor.move_voltage(0);
+        outtakeMotor.move_voltage(0);
+        }
+        intakeMotor.move_voltage(5000);
+        sortMotor.move_voltage(5000);
+        outtakeMotor.move_voltage(-2000);
+        previousState = highGoalSlow;
+
+
+    }
+   
+
+    if(intakeState==non){
+        intakeMotor.move_voltage(0);
+        midMotor.move_voltage(0);
+        sortMotor.move_voltage(0);
+        outtakeMotor.move_voltage(0);
+        //previousState = non;
+    }
+}
+
+void Control::anglePID() {
+    
+    if (intakeState != storage) return;
+
+    sortMotor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+    sortMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+
+    outtakeMotor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+    outtakeMotor.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+
+   
+    static float prevErrorSort = 0;
+
+    float kP_sort = 150;
+    float kD_sort = 15;
+
+    float sortAngle = sortMotor.get_position();
+    float sortError = targetAngle - sortAngle;
+    float sortDerivative = sortError - prevErrorSort;
+
+    float sortPower = kP_sort * sortError + kD_sort * sortDerivative;
+
+    if (sortPower > 12000) sortPower = 12000;
+    if (sortPower < -12000) sortPower = -12000;
+
+    if (fabs(sortError) < 2) {
+        sortPower = 0;
+    }
+
+    sortMotor.move_voltage(sortPower);
+    prevErrorSort = sortError;
+
+    static float prevErrorOut = 0;
+
+    float kP_out = 140;
+    float kD_out = 12;
+
+    float outAngle = outtakeMotor.get_position();
+    float outError = targetOuttakeAngle - outAngle;
+    float outDerivative = outError - prevErrorOut;
+
+    float outPower = kP_out * outError + kD_out * outDerivative;
+
+    if (outPower > 12000) outPower = 12000;
+    if (outPower < -12000) outPower = -12000;
+
+    if (fabs(outError) < 2|| dSensor.get_distance() < 50) {
+        outPower = 0;
+    }
+
+    outtakeMotor.move_voltage(outPower);
+    prevErrorOut = outError;
 }
 
 
+
+/*
 void Control::motorUpdate(){
     if(outtakeTargetVelocity!=1000){
         double v=outtakeMotor.get_actual_velocity();
@@ -291,4 +498,4 @@ void Control::motorUpdate(){
         double output=kP*error+kI*midMotorIntegral;
         midMotor.move_voltage(output);
     }
-}
+}*/

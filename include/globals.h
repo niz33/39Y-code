@@ -25,6 +25,7 @@ extern pros::Motor midMotor;
 extern pros::Optical cSensor;
 extern pros::Optical cSensor2;
 extern pros::Distance dSensor;
+extern pros::Distance intakeSensor;
 
 //horizontal odometry
 extern pros::Rotation horizontalRotation;

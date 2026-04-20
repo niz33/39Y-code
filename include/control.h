@@ -12,6 +12,8 @@ class Control{
 
         static void motorUpdate();
 
+        static void anglePID();
+
         enum IntakeState{
             longGoal,
             highGoal,
@@ -34,6 +36,7 @@ class Control{
         };
         
         static IntakeState intakeState;
+        static IntakeState previousState;
         static ScoringColor scoringColor;
         static ColorSortingType colorSortingType;
 
@@ -54,6 +57,7 @@ class Control{
         static int storageTime;
         static int highGoalTime;
         static int lowGoalCooldown;
+        static int blockcount;
 
         static double outtakeTargetVelocity;
         static double outtakeIntegral;
@@ -71,9 +75,15 @@ class Control{
 
 
         static bool wingRState;
+        static bool wingLState;
         static bool feetState;
         static bool hoodState;
         static bool matchLoadState;
+        static bool middleGoalDescoreState;
+
+        static float targetAngle;
+
+        static float targetOuttakeAngle;
 
 
 

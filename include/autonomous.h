@@ -16,6 +16,7 @@ class Autonomous{
     static void intake();
     
     static void matchDescore();
+    static void matchDescoreReverse();
     static void matchMacroExit();
 
     static int intaking;
@@ -35,7 +36,10 @@ class Autonomous{
     
     static void skillsAuton1();
     static void skillsAuton2();
+
     static void skillsAuton3();
+
+    static void matchRight1Goal8Ball();
 
     
     

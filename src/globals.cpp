@@ -1,5 +1,6 @@
 #include "main.h"
 #include "pros/abstract_motor.hpp"
+#include "pros/distance.hpp"
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
@@ -16,37 +17,42 @@ pros::Motor rightWheel3(-20,pros::v5::MotorGears::blue);
 pros::MotorGroup rightWheels({11,12,-13},pros::v5::MotorGears::blue); 
 
 //intake
-pros::Motor intakeMotor(-2, pros::v5::MotorGears::rpm_200);
+pros::Motor intakeMotor(-2, pros::v5::MotorGears::rpm_600);
 pros::Motor midMotor(8, pros::v5::MotorGears::rpm_200);
-pros::Motor outtakeMotor(-9, pros::v5::MotorGears::rpm_200);
-pros::Motor sortMotor(-3, pros::v5::MotorGears::rpm_200);
+pros::Motor outtakeMotor(-3, pros::v5::MotorGears::rpm_200);
+pros::Motor sortMotor(-9, pros::v5::MotorGears::rpm_200);
 
 pros::Optical cSensor(1);
 pros::Optical cSensor2(1);
 pros::Distance dSensor(6);
+pros::Distance intakeSensor(21);
 
 pros::ADIDigitalOut matchLoad('G', false);
 // pros::ADIDigitalIn matchLoadIn('G');
-pros::ADIDigitalOut wingL('C', false);
+//pros::ADIDigitalOut wingL('C', false);
 // pros::ADIDigitalIn wingLIn('C');
-pros::ADIDigitalOut middleDescore('D', false);
+pros::ADIDigitalOut middleDescore('F', false);
 // pros::ADIDigitalIn middleDescoreIn('D');
 pros::ADIDigitalOut wingR('D', false);
 // pros::ADIDigitalIn wingRIn('D');
-pros::ADIDigitalOut intakeLift('E', false);
+pros::ADIDigitalOut intakeLift('I', false);
 // pros::ADIDigitalIn intakeLiftIn('E');
-pros::ADIDigitalOut feet('B', false);
+pros::ADIDigitalOut feet('A', false);
+
+pros::ADIDigitalOut wingL('B', false);
 // pros::ADIDigitalIn feetIn('B');
 pros::ADIDigitalOut hood('H', false);
 // pros::ADIDigitalIn hoodIn('H');
-pros::ADIDigitalOut roof('H', false);
+pros::ADIDigitalOut roof('I', false);
 // pros::ADIDigitalIn roofIn('H');
+
+//pros::ADIDigitalOut middleDescore('H', false);
 
  
 //inertial Sensor
 pros::Imu inertial(10);
-pros::Distance distLeft(9);
-pros::Distance distRight(2);
+//pros::Distance distLeft(9);
+pros::Distance distRight(5);
 pros::Distance distFront(7);
 pros::Distance distBack(6);
 
