@@ -108,10 +108,10 @@ void Control::drive(){
 
 
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
-        if(!hoodState){
+        //if(!hoodState){
             matchLoadState=!matchLoadState;
             matchLoad.set_value(matchLoadState);
-        }
+        //}
         
 	}
 
