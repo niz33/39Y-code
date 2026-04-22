@@ -11,10 +11,14 @@ void Autonomous::print(){
         //pros::lcd::print(4, "Mid: %f", Control::MidTorque);
         pros::lcd::print(4, "Target Angle: %f C: %f",  Control::targetAngle, sortMotor.get_position());
         pros::lcd::print(5, "Outtake: %f", Control::outtakeIntegral);
-        pros::lcd::print(6, "Color: %f", cSensor.get_hue());
-        pros::lcd::print(7, "BlockCount: %d Distance: %d", 
-                 Control::blockcount, intakeSensor.get_distance());
-
+        pros::lcd::print(6, "Color: %f", cSensor2.get_hue());
+        //pros::lcd::print(7, "BlockCount: %d Distance: %d", 
+        //         Control::blockcount, intakeSensor.get_distance());
+        //pros::lcd::print(7, "Color: %f", Control::colorHistory.front());
+        int flag=0;
+        if(Control::scoringColor == Control::ScoringColor::red && cSensor2.get_hue() > 60) flag=1;
+        if(Control::scoringColor == Control::ScoringColor::blue && cSensor2.get_hue() < 30) flag=1;
+        pros::lcd::print(7, "Flag: %d", flag);
         pros::delay(50);
     }
 } 
@@ -118,7 +122,7 @@ void Autonomous::scoreHighMatch(color c,int scoringTime){
 }
 void Autonomous::matchDescore(){
 
-    chassis.setPose(0,0,0);
+    chassis.setPose(0,0,0); 
     matchLoad.set_value(false);
     chassis.moveToPoint(-11,1,1200,{.forwards=false,.minSpeed=120,.earlyExitRange=2},false);
     //chassis.moveToPose(-12,1,40,1200,{.forwards=false,.minSpeed=30,.earlyExitRange=7},false);
@@ -127,8 +131,9 @@ void Autonomous::matchDescore(){
     //chassis.moveToPoint(-10.5,2,2000,{.forwards=true, .minSpeed=90},false);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
 
- 
-
+    
+    
+    
 
 }
 
@@ -136,12 +141,11 @@ void Autonomous::matchDescore(){
 void Autonomous::matchDescoreReverse(){
 
     chassis.setPose(0,0,0);
-
     matchLoad.set_value(false);
-    chassis.moveToPoint(0,-2,1200,{.forwards=false,.minSpeed=120,.earlyExitRange=2},false);
-    chassis.swingToHeading(20, lemlib::DriveSide::RIGHT, 1000,{.direction = lemlib::AngularDirection::CCW_COUNTERCLOCKWISE, .minSpeed=100,.earlyExitRange=1, },false);
-    chassis.turnToHeading(180,900,{.minSpeed=60,.earlyExitRange=5},false);
-    chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
+    chassis.moveToPoint(9,-5,1200,{.forwards=false,.minSpeed=90,.earlyExitRange=1},false);
+    chassis.turnToHeading(-175,1500,{.minSpeed=60,.earlyExitRange=5},false);
+
+    chassis.moveToPoint(15,5,1200,{.forwards=false,.minSpeed=120},false);
 
  
 }

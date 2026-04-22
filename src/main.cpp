@@ -43,6 +43,11 @@ void initialize() {
 	matchLoad.set_value(false);
 	wingL.set_value(false);
 	cSensor.set_integration_time(10);
+
+	cSensor.set_led_pwm(100);
+	cSensor2.set_led_pwm(100);
+	cSensor.set_integration_time(10);
+	cSensor2.set_integration_time(10);
 	
 	//Autonomous::distTest();
 
@@ -79,8 +84,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	cSensor.set_led_pwm(100);
-	cSensor.set_led_pwm(100);
+	
 	
 	//chassis.calibrate(); // calibrate sensors
 	//pros::delay(2000);
@@ -131,6 +135,7 @@ void opcontrol() {
 	leftWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	rightWheels.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	cSensor.set_led_pwm(100);
+	cSensor2.set_led_pwm(100);
 	// Autonomous::skillsAuton();
 	// pros::Controller master(pros::E_CONTROLLER_MASTER);
 	while (true) {

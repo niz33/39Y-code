@@ -13,9 +13,10 @@ bool Control::wingRState = false;
 bool Control::wingLState = false;
 bool Control::feetState = false;
 bool Control::hoodState = false;  
+bool Control::roofState = false;
 bool Control::matchLoadState = false;
 bool Control::middleGoalDescoreState = false;
-int Control::cDelay = 3;
+int Control::cDelay = 13;
 int Control::countdown = 0;
 int Control::cooldown = 0;
 int Control::middleDescoreDuration = 0;
@@ -31,6 +32,7 @@ double Control::SortVelocity = 0;
 int Control::storageTime=0;
 int Control::highGoalTime=0;
 int Control::lowGoalCooldown=0;
+std::queue<int> Control::colorHistory;
 
 double Control::outtakeTargetVelocity=0;
 double Control::outtakeIntegral=0;
@@ -75,13 +77,20 @@ void Control::drive(){
         intakeState=storage;
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
         intakeState=lowGoal;
-    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)&&distFront.get()<100){
+    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)&&distFront.get()<150){
         //Autonomous::matchDescoreReverse();
+        chassis.cancelAllMotions();
         Autonomous::matchDescore();
+        intakeState=storage;
+
+    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)&&distFront.get()<150){
+        chassis.cancelAllMotions();
+        Autonomous::matchDescoreReverse();
+        intakeState=storage;
 
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-        intakeMotor.move_velocity(-300);
-        outtakeMotor.move_velocity(-600);
+        // intakeMotor.move_velocity(-300);
+        // outtakeMotor.move_velocity(-600);
         Control::cooldown=0;
     } else {
         intakeState=non;
@@ -99,8 +108,10 @@ void Control::drive(){
 
 
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
-        matchLoadState=!matchLoadState;
-        matchLoad.set_value(matchLoadState);
+        if(!hoodState){
+            matchLoadState=!matchLoadState;
+            matchLoad.set_value(matchLoadState);
+        }
         
 	}
 
@@ -112,14 +123,22 @@ void Control::drive(){
     
    
 
-    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)&&distFront.get()<150){
         feetState=!feetState;
-        //feet.set_value(feetState);
+        feet.set_value(feetState);
     }
 
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
+        roofState=!roofState;
+        matchLoadState=false;
+        matchLoad.set_value(false);
+        pros::delay(300);
+        roof.set_value(roofState);
+    }
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
         hoodState=!hoodState;
         hood.set_value(hoodState);
+        
     }
 
      if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){
@@ -308,14 +327,33 @@ void Control::intake(){/*
     */
 
     if(intakeState==longGoal){
-        intakeMotor.move_voltage(12000);
-        midMotor.move_voltage(12000);
-        sortMotor.move_voltage(12000);
-        outtakeMotor.move_voltage(12000);
+        int flag=0;
+        if(scoringColor==ScoringColor::red&&cSensor2.get_hue()>60) flag=1;
+        if(scoringColor==ScoringColor::blue&&cSensor2.get_hue()<30) flag=1;
+        colorHistory.push(flag);
+        if(colorHistory.front()==1){
+            intakeMotor.move_voltage(12000);
+            midMotor.move_voltage(12000);
+            sortMotor.move_voltage(12000);
+            outtakeMotor.move_voltage(-12000);
+        }
+        else{
+            intakeMotor.move_voltage(12000);
+            midMotor.move_voltage(12000);
+            sortMotor.move_voltage(12000);
+            outtakeMotor.move_voltage(12000);
+        }
+        //scoringColor=Control::blue;
+        if(colorHistory.size()>cDelay) colorHistory.pop();
+        
         hood.set_value(true);
         previousState = longGoal;
+
+
     }else{
         hood.set_value(false);
+        //clear queue
+        colorHistory = std::queue<int>();
     }
     if(intakeState==lowGoal){
         intakeMotor.move_voltage(-12000);
@@ -324,6 +362,16 @@ void Control::intake(){/*
         outtakeMotor.move_voltage(-12000);
         previousState = lowGoal;
     }
+
+    if(intakeState==lowGoalSlow){
+        intakeMotor.move_velocity(-300);
+        midMotor.move_voltage(-12000);
+        sortMotor.move_voltage(-12000);
+        outtakeMotor.move_voltage(-12000);
+        previousState = lowGoalSlow;
+    }
+
+    
     if(intakeState==storage){
         if(previousState != storage){
             blockcount = 0;

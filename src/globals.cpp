@@ -23,7 +23,7 @@ pros::Motor outtakeMotor(-3, pros::v5::MotorGears::rpm_200);
 pros::Motor sortMotor(-9, pros::v5::MotorGears::rpm_200);
 
 pros::Optical cSensor(1);
-pros::Optical cSensor2(1);
+pros::Optical cSensor2(5);
 pros::Distance dSensor(6);
 pros::Distance intakeSensor(21);
 
@@ -35,15 +35,15 @@ pros::ADIDigitalOut middleDescore('F', false);
 // pros::ADIDigitalIn middleDescoreIn('D');
 pros::ADIDigitalOut wingR('D', false);
 // pros::ADIDigitalIn wingRIn('D');
-pros::ADIDigitalOut intakeLift('I', false);
+//pros::ADIDigitalOut intakeLift('I', false);
 // pros::ADIDigitalIn intakeLiftIn('E');
-pros::ADIDigitalOut feet('A', false);
+pros::ADIDigitalOut feet('B', false);
 
 pros::ADIDigitalOut wingL('B', false);
 // pros::ADIDigitalIn feetIn('B');
 pros::ADIDigitalOut hood('H', false);
 // pros::ADIDigitalIn hoodIn('H');
-pros::ADIDigitalOut roof('I', false);
+pros::ADIDigitalOut roof('E', false);
 // pros::ADIDigitalIn roofIn('H');
 
 //pros::ADIDigitalOut middleDescore('H', false);

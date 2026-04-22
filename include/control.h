@@ -1,5 +1,6 @@
 #pragma once
 #include "main.h"
+#include <vector>
 #include <queue>
 
 class Control{
@@ -21,6 +22,7 @@ class Control{
             lowGoal,
             lowGoalCooling,
             storage,
+            lowGoalSlow,
             non,
         };
 
@@ -65,6 +67,7 @@ class Control{
         static double midMotorTargetVelocity;
         static double midMotorIntegral;
 
+        static std::queue<int> colorHistory;
 
 
         static bool lastR2;
@@ -79,6 +82,7 @@ class Control{
         static bool feetState;
         static bool hoodState;
         static bool matchLoadState;
+        static bool roofState;
         static bool middleGoalDescoreState;
 
         static float targetAngle;
