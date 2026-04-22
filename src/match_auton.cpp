@@ -365,12 +365,12 @@ void Autonomous::matchSolo(){
     chassis.setPose(0,0,chassis.getPose().theta);
  
     matchLoad.set_value(false);
-    chassis.moveToPoint(-15,7,1500,{.forwards=false,.maxSpeed=60,.minSpeed=30,.earlyExitRange=5},false);
+    chassis.moveToPoint(-15,9,1500,{.forwards=false,.maxSpeed=60,.minSpeed=30,.earlyExitRange=4},false);
 
-    chassis.moveToPoint(-72,7,1500,{.forwards=false,.maxSpeed=100,.minSpeed=30,.earlyExitRange=30},false);
-    chassis.moveToPoint(-72,7,1500,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=17},false);
+    chassis.moveToPoint(-72,8,1500,{.forwards=false,.maxSpeed=100,.minSpeed=30,.earlyExitRange=30},false);
+    chassis.moveToPoint(-72,8,1500,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=17},false);
     
-    chassis.moveToPoint(-72,7,1500,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=8},false);
+    chassis.moveToPoint(-72,8,1500,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=8},false);
     chassis.moveToPoint(-97.5,-10,1500,{.forwards=false,.maxSpeed=100},false);
     matchLoad.set_value(true);
     chassis.turnToPoint(-97.5,20,800,{.forwards=true,.maxSpeed=80},false);
