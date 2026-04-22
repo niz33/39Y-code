@@ -22,7 +22,7 @@ int Control::cooldown = 0;
 int Control::middleDescoreDuration = 0;
 Control::IntakeState Control::intakeState = Control::non;
 Control::IntakeState Control::previousState = Control::non;
-Control::ScoringColor Control::scoringColor = Control::red;
+Control::ScoringColor Control::scoringColor = Control::blue;
 Control::ColorSortingType Control::colorSortingType = Control::none;
 double Control::IntakeTorque = 0;
 double Control::OuttakeTorque = 0;
@@ -32,7 +32,8 @@ double Control::SortVelocity = 0;
 int Control::storageTime=0;
 int Control::highGoalTime=0;
 int Control::lowGoalCooldown=0;
-std::queue<int> Control::colorHistory;
+std::queue<int> Control::colorHistoryLong;
+std::queue<int> Control::colorHistoryMid;
 
 double Control::outtakeTargetVelocity=0;
 double Control::outtakeIntegral=0;
@@ -123,16 +124,16 @@ void Control::drive(){
     
    
 
-    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)&&distFront.get()<150){
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
         feetState=!feetState;
         feet.set_value(feetState);
     }
 
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
         roofState=!roofState;
-        matchLoadState=false;
-        matchLoad.set_value(false);
-        pros::delay(300);
+        //matchLoadState=false;
+        //matchLoad.set_value(false);
+        //pros::delay(300);
         roof.set_value(roofState);
     }
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
@@ -330,8 +331,8 @@ void Control::intake(){/*
         int flag=0;
         if(scoringColor==ScoringColor::red&&cSensor2.get_hue()>60) flag=1;
         if(scoringColor==ScoringColor::blue&&cSensor2.get_hue()<30) flag=1;
-        colorHistory.push(flag);
-        if(colorHistory.front()==1){
+        colorHistoryLong.push(flag);
+        if(colorHistoryLong.front()==1){
             intakeMotor.move_voltage(12000);
             midMotor.move_voltage(12000);
             sortMotor.move_voltage(12000);
@@ -344,7 +345,7 @@ void Control::intake(){/*
             outtakeMotor.move_voltage(12000);
         }
         //scoringColor=Control::blue;
-        if(colorHistory.size()>cDelay) colorHistory.pop();
+        if(colorHistoryLong.size()>cDelay) colorHistoryLong.pop();
         
         hood.set_value(true);
         previousState = longGoal;
@@ -353,7 +354,7 @@ void Control::intake(){/*
     }else{
         hood.set_value(false);
         //clear queue
-        colorHistory = std::queue<int>();
+        colorHistoryLong = std::queue<int>();
     }
     if(intakeState==lowGoal){
         intakeMotor.move_voltage(-12000);
@@ -421,7 +422,7 @@ void Control::intake(){/*
 
     if(intakeState == highGoal){
         if (previousState != highGoal) {
-    
+        
         
         outtakeMotor.move_voltage(12000);
         pros::delay(50);
@@ -433,15 +434,33 @@ void Control::intake(){/*
         sortMotor.move_voltage(0);
         outtakeMotor.move_voltage(0);
         }
-        intakeMotor.move_voltage(12000);
-        sortMotor.move_voltage(12000);
-        outtakeMotor.move_voltage(-12000);
+
+        int flag=0;
+        if(scoringColor==ScoringColor::red&&cSensor2.get_hue()>60) flag=1;
+        if(scoringColor==ScoringColor::blue&&cSensor2.get_hue()<30) flag=1;
+        colorHistoryMid.push(flag);
+        if(colorHistoryMid.front()==1){
+            intakeMotor.move_voltage(12000);
+            sortMotor.move_voltage(12000);
+            outtakeMotor.move_voltage(-12000);
+        }
+        else{
+            intakeMotor.move_voltage(12000);
+            sortMotor.move_voltage(12000);
+            outtakeMotor.move_voltage(-12000);
+        }
+        //scoringColor=Control::blue;
+        if(colorHistoryMid.size()>cDelay-5) colorHistoryMid.pop();
+
+        
         previousState = highGoal;
 
 
     
+    }else{
+        colorHistoryMid = std::queue<int>();
     }
-    else if(intakeState == highGoalSlow){
+    if(intakeState == highGoalSlow){
         if (previousState != highGoalSlow){
         outtakeMotor.move_voltage(12000);
         pros::delay(50);

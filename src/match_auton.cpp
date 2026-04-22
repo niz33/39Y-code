@@ -375,7 +375,7 @@ void Autonomous::matchSolo(){
     matchLoad.set_value(true);
     chassis.turnToPoint(-97.5,20,800,{.forwards=true,.maxSpeed=80},false);
     chassis.moveToPoint(-97.5,20,1000,{.forwards=true,.maxSpeed=100,.minSpeed=80},true);
-    scoreLongMatch(color::red,1000);
+    scoreLongMatch(color::red,800);
     
     chassis.setPose(0,0,chassis.getPose().theta);
 
