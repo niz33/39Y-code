@@ -124,9 +124,9 @@ void Autonomous::matchDescore(){
 
     chassis.setPose(0,0,0); 
     matchLoad.set_value(false);
-    chassis.moveToPoint(-11,1,1200,{.forwards=false,.minSpeed=120,.earlyExitRange=2},false);
+    chassis.moveToPoint(-11.5,1,1200,{.forwards=false,.minSpeed=120,.earlyExitRange=2},false);
     //chassis.moveToPose(-12,1,40,1200,{.forwards=false,.minSpeed=30,.earlyExitRange=7},false);
-    chassis.turnToHeading(20,1500,{.minSpeed=60,.earlyExitRange=5},false);
+    chassis.turnToHeading(19,1500,{.minSpeed=60,.earlyExitRange=4},false);
     chassis.moveToPoint(-10,10,2000,{.forwards=true, .minSpeed=120,.earlyExitRange=5},false);
     //chassis.moveToPoint(-10.5,2,2000,{.forwards=true, .minSpeed=90},false);
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_HOLD);
@@ -143,9 +143,9 @@ void Autonomous::matchDescoreReverse(){
     chassis.setPose(0,0,0);
     matchLoad.set_value(false);
     chassis.moveToPoint(9,-5,1200,{.forwards=false,.minSpeed=90,.earlyExitRange=1},false);
-    chassis.turnToHeading(-175,1500,{.minSpeed=60,.earlyExitRange=5},false);
+    chassis.turnToHeading(-180,1500,{.minSpeed=60,.earlyExitRange=5},false);
 
-    chassis.moveToPoint(15,5,1200,{.forwards=false,.minSpeed=120},false);
+    chassis.moveToPoint(17,5,1200,{.forwards=false,.minSpeed=120},false);
 
  
 }

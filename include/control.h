@@ -68,7 +68,7 @@ class Control{
         static double midMotorIntegral;
 
         static std::queue<int> colorHistoryMid;
-        static std::queue<int> colorHistoryLong;
+        static std::queue<std::pair<int,int>> colorHistoryLong;
 
         static bool lastR2;
         static bool lastA;

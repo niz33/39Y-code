@@ -32,7 +32,7 @@ double Control::SortVelocity = 0;
 int Control::storageTime=0;
 int Control::highGoalTime=0;
 int Control::lowGoalCooldown=0;
-std::queue<int> Control::colorHistoryLong;
+std::queue<std::pair<int,int>> Control::colorHistoryLong;
 std::queue<int> Control::colorHistoryMid;
 
 double Control::outtakeTargetVelocity=0;
@@ -78,13 +78,13 @@ void Control::drive(){
         intakeState=storage;
     } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
         intakeState=lowGoal;
-    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)&&distFront.get()<150){
+    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){
         //Autonomous::matchDescoreReverse();
         chassis.cancelAllMotions();
         Autonomous::matchDescore();
         intakeState=storage;
 
-    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)&&distFront.get()<150){
+    } else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)){
         chassis.cancelAllMotions();
         Autonomous::matchDescoreReverse();
         intakeState=storage;
@@ -331,8 +331,8 @@ void Control::intake(){/*
         int flag=0;
         if(scoringColor==ScoringColor::red&&cSensor2.get_hue()>60) flag=1;
         if(scoringColor==ScoringColor::blue&&cSensor2.get_hue()<30) flag=1;
-        colorHistoryLong.push(flag);
-        if(colorHistoryLong.front()==1){
+        colorHistoryLong.push({flag,sortMotor.get_position()});
+        if(colorHistoryLong.front().first==1){
             intakeMotor.move_voltage(12000);
             midMotor.move_voltage(12000);
             sortMotor.move_voltage(12000);
@@ -345,7 +345,7 @@ void Control::intake(){/*
             outtakeMotor.move_voltage(12000);
         }
         //scoringColor=Control::blue;
-        if(colorHistoryLong.size()>cDelay) colorHistoryLong.pop();
+        while(sortMotor.get_position()-colorHistoryLong.front().second>60) colorHistoryLong.pop();
         
         hood.set_value(true);
         previousState = longGoal;
@@ -354,7 +354,7 @@ void Control::intake(){/*
     }else{
         hood.set_value(false);
         //clear queue
-        colorHistoryLong = std::queue<int>();
+        colorHistoryLong = std::queue<std::pair<int,int>>();
     }
     if(intakeState==lowGoal){
         intakeMotor.move_voltage(-12000);

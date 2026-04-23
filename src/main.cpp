@@ -98,7 +98,7 @@ void autonomous() {
     //     }
 	//Autonomous::descore();
 	//Autonomous::skillsAuton();
-	//Autonomous::matchSolo();
+	Autonomous::matchSolo();
 	//  Autonomous::test();
 
 	//Autonomous::skillsAuton2();
@@ -109,7 +109,7 @@ void autonomous() {
 	//Autonomous::matchLeft1Goal();
 	//Autonomous::matchLeft2Goal();
 	//Autonomous::distTest();
-	Autonomous::matchRight2Goal();
+	//Autonomous::matchRight2Goal();
 
 	//Autonomous::matchLeft1Goal();
 	//Autonomous::matchRight1Goal8Ball();

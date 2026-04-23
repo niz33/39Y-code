@@ -381,7 +381,7 @@ void Autonomous::matchSolo(){
 
     Control::intakeState = Control::IntakeState::storage;
     chassis.moveToPoint(1,-45,1000,{.forwards=false,.maxSpeed=70,.minSpeed=50,.earlyExitRange=25},false);
-    chassis.moveToPoint(1,-45,700,{.forwards=false,.maxSpeed=50},false);
+    chassis.moveToPoint(1,-45,800,{.forwards=false,.maxSpeed=60},false);
 
 
     chassis.setPose(chassis.getPose().x,0,chassis.getPose().theta);
